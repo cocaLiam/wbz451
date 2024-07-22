@@ -54,9 +54,9 @@ typedef struct RipeMd {
 } RipeMd;
 
 
-WOLFSSL_API int wc_InitRipeMd(RipeMd* ripemd);
-WOLFSSL_API int wc_RipeMdUpdate(RipeMd* ripemd, const byte* data, word32 len);
-WOLFSSL_API int wc_RipeMdFinal(RipeMd* ripemd, byte* hash);
+WOLFSSL_API int wc_InitRipeMd(RipeMd*);
+WOLFSSL_API int wc_RipeMdUpdate(RipeMd*, const byte*, word32);
+WOLFSSL_API int wc_RipeMdFinal(RipeMd*, byte*);
 
 
 #ifdef __cplusplus

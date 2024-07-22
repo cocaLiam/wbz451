@@ -1,4 +1,3 @@
-// DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
@@ -21,7 +20,6 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-// DOM-IGNORE-END
 
 /*******************************************************************************
   MPLAB Harmony Application Source File
@@ -56,7 +54,7 @@
 #include "definitions.h"
 #include "app_ble.h"
 #include "ble_trsps/ble_trsps.h"
-#include "system/console/sys_console.h"
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -176,16 +174,9 @@ void APP_Tasks ( void )
             // Register the UART RX callback function
             SERCOM0_USART_ReadCallbackRegister(uart_cb, (uintptr_t)NULL);
             APP_BleStackInit();
-            
-            // Enable Ext Adv
-            BLE_GAP_ExtAdvEnableParams_T extAdvEnableParam;
-            extAdvEnableParam.advHandle = 0x00; // Adv Set - 0x00
-            extAdvEnableParam.duration = 0;
-            extAdvEnableParam.maxExtAdvEvts = 0; // Enable Cont ADV 
-            ret = BLE_GAP_SetExtAdvEnable(true, 0x01,  &extAdvEnableParam);
-            if (ret == MBA_RES_SUCCESS)
-            SYS_CONSOLE_PRINT("\r\n\r\n------Ext Advertising...\r\n");  
-            
+            // Start Advertisement
+            BLE_GAP_SetAdvEnable(0x01, 0x00);
+            SERCOM0_USART_Write((uint8_t *)"Advertising\r\n",13);
             if (appInitialized)
             {
 

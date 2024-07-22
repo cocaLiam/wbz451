@@ -27,9 +27,7 @@
 
 #ifdef HAVE_PKCS11
 
-#ifndef HAVE_PKCS11_STATIC
 #include <dlfcn.h>
-#endif
 
 #include <wolfssl/wolfcrypt/wc_pkcs11.h>
 #include <wolfssl/wolfcrypt/error-crypt.h>
@@ -107,7 +105,7 @@ static CK_OBJECT_CLASS secretKeyClass  = CKO_SECRET_KEY;
 #define PKCS11_RV(op, rv)       pkcs11_rv(op, rv)
 /* Enable logging of PKCS#11 calls and value. */
 #define PKCS11_VAL(op, val)     pkcs11_val(op, val)
-/* Enable logging of PKCS#11 template. */
+/* Enable logging of PKCS#11 tmaplate. */
 #define PKCS11_DUMP_TEMPLATE(name, templ, cnt)  \
     pkcs11_dump_template(name, templ, cnt)
 
@@ -400,7 +398,7 @@ static void pkcs11_val(const char* op, CK_ULONG val)
 #define PKCS11_RV(op, ev)
 /* Disable logging of PKCS#11 calls and value. */
 #define PKCS11_VAL(op, val)
-/* Disable logging of PKCS#11 template. */
+/* Disable logging of PKCS#11 tmaplate. */
 #define PKCS11_DUMP_TEMPLATE(name, templ, cnt)
 #endif
 
@@ -418,10 +416,7 @@ static void pkcs11_val(const char* op, CK_ULONG val)
 int wc_Pkcs11_Initialize(Pkcs11Dev* dev, const char* library, void* heap)
 {
     int                  ret = 0;
-    CK_RV                rv;
-#ifndef HAVE_PKCS11_STATIC
     void*                func;
-#endif
     CK_C_INITIALIZE_ARGS args;
 
     if (dev == NULL || library == NULL)
@@ -429,7 +424,6 @@ int wc_Pkcs11_Initialize(Pkcs11Dev* dev, const char* library, void* heap)
 
     if (ret == 0) {
         dev->heap = heap;
-#ifndef HAVE_PKCS11_STATIC
         dev->dlHandle = dlopen(library, RTLD_NOW | RTLD_LOCAL);
         if (dev->dlHandle == NULL) {
             WOLFSSL_MSG(dlerror());
@@ -446,11 +440,8 @@ int wc_Pkcs11_Initialize(Pkcs11Dev* dev, const char* library, void* heap)
         }
     }
     if (ret == 0) {
-        rv = ((CK_C_GetFunctionList)func)(&dev->func);
-#else
-        rv = C_GetFunctionList(&dev->func);
-#endif
-        if (rv != CKR_OK) {
+        ret = ((CK_C_GetFunctionList)func)(&dev->func);
+        if (ret != CKR_OK) {
             PKCS11_RV("CK_C_GetFunctionList", ret);
             ret = WC_HW_E;
         }
@@ -459,8 +450,8 @@ int wc_Pkcs11_Initialize(Pkcs11Dev* dev, const char* library, void* heap)
     if (ret == 0) {
         XMEMSET(&args, 0x00, sizeof(args));
         args.flags = CKF_OS_LOCKING_OK;
-        rv = dev->func->C_Initialize(&args);
-        if (rv != CKR_OK) {
+        ret = dev->func->C_Initialize(&args);
+        if (ret != CKR_OK) {
             PKCS11_RV("C_Initialize", ret);
             ret = WC_INIT_E;
         }
@@ -479,60 +470,46 @@ int wc_Pkcs11_Initialize(Pkcs11Dev* dev, const char* library, void* heap)
  */
 void wc_Pkcs11_Finalize(Pkcs11Dev* dev)
 {
-    if (dev != NULL
-#ifndef HAVE_PKCS11_STATIC
-        && dev->dlHandle != NULL
-#endif
-        ) {
+    if (dev != NULL && dev->dlHandle != NULL) {
         if (dev->func != NULL) {
             dev->func->C_Finalize(NULL);
             dev->func = NULL;
         }
-#ifndef HAVE_PKCS11_STATIC
         dlclose(dev->dlHandle);
         dev->dlHandle = NULL;
-#endif
     }
 }
 
-/* lookup by token name and return slotId or (-1) if not found */
-static int Pkcs11Slot_FindByTokenName(Pkcs11Dev* dev,
-    const char* tokenName, size_t tokenNameSz)
-{
-    CK_RV         rv;
-    CK_ULONG      slotCnt = 0;
-    CK_TOKEN_INFO tinfo;
-    int           slotId = -1;
-    rv = dev->func->C_GetSlotList(CK_TRUE, NULL, &slotCnt);
-    if (rv == CKR_OK) {
-        for (slotId = 0; slotId < (int)slotCnt; slotId++) {
-            rv = dev->func->C_GetTokenInfo(slotId, &tinfo);
-            PKCS11_RV("C_GetTokenInfo", rv);
-            if (rv == CKR_OK &&
-                XMEMCMP(tinfo.label, tokenName, tokenNameSz) == 0) {
-                return slotId;
-            }
-        }
-    }
-    return -1;
-}
-
-/* lookup by slotId or tokenName */
-static int Pkcs11Token_Init(Pkcs11Token* token, Pkcs11Dev* dev, int slotId,
-    const char* tokenName, size_t tokenNameSz,
-    const unsigned char* userPin, size_t userPinSz)
+/**
+ * Set up a token for use.
+ *
+ * @param  [in]  token      Token object.
+ * @param  [in]  dev        PKCS#11 device object.
+ * @param  [in]  slotId     Slot number of the token.<br>
+ *                          Passing -1 uses the first available slot.
+ * @param  [in]  tokenName  Name of token to initialize.
+ * @param  [in]  userPin    PIN to use to login as user.
+ * @param  [in]  userPinSz  Number of bytes in PIN.
+ * @return  BAD_FUNC_ARG when token, dev and/or tokenName is NULL.
+ * @return  WC_INIT_E when initializing token fails.
+ * @return  WC_HW_E when another PKCS#11 library call fails.
+ * @return  -1 when no slot available.
+ *          0 on success.
+ */
+int wc_Pkcs11Token_Init(Pkcs11Token* token, Pkcs11Dev* dev, int slotId,
+    const char* tokenName, const unsigned char* userPin, int userPinSz)
 {
     int         ret = 0;
     CK_RV       rv;
     CK_SLOT_ID* slot = NULL;
     CK_ULONG    slotCnt = 0;
 
-    if (token == NULL || dev == NULL) {
+    if (token == NULL || dev == NULL || tokenName == NULL)
         ret = BAD_FUNC_ARG;
-    }
 
     if (ret == 0) {
         if (slotId < 0) {
+            /* Use first available slot with a token. */
             rv = dev->func->C_GetSlotList(CK_TRUE, NULL, &slotCnt);
             PKCS11_RV("C_GetSlotList", rv);
             if (rv != CKR_OK) {
@@ -552,24 +529,10 @@ static int Pkcs11Token_Init(Pkcs11Token* token, Pkcs11Dev* dev, int slotId,
                 }
             }
             if (ret == 0) {
-                if (tokenName != NULL && tokenNameSz > 0) {
-                    /* find based on token name */
-                    slotId = Pkcs11Slot_FindByTokenName(dev,
-                        tokenName, tokenNameSz);
-                }
-                else {
-                    /* Use first available slot with a token. */
+                if (slotCnt > 0)
                     slotId = (int)slot[0];
-                }
-            }
-        }
-        else {
-            /* verify slotId is valid */
-            CK_SLOT_INFO sinfo;
-            rv = dev->func->C_GetSlotInfo(slotId, &sinfo);
-            PKCS11_RV("C_GetSlotInfo", rv);
-            if (rv != CKR_OK) {
-                ret = WC_INIT_E;
+                else
+                    ret = WC_HW_E;
             }
         }
     }
@@ -581,59 +544,10 @@ static int Pkcs11Token_Init(Pkcs11Token* token, Pkcs11Dev* dev, int slotId,
         token->userPinSz = (CK_ULONG)userPinSz;
     }
 
-    if (slot != NULL) {
+    if (slot != NULL)
         XFREE(slot, dev->heap, DYNAMIC_TYPE_TMP_BUFFER);
-    }
 
     return ret;
-}
-
-/**
- * Set up a token for use. Lookup by slotId or tokenName
- *
- * @param  [in]  token      Token object.
- * @param  [in]  dev        PKCS#11 device object.
- * @param  [in]  slotId     Slot number of the token.<br>
- *                          Passing -1 uses the first available slot.
- * @param  [in]  tokenName  Name of token to initialize (optional)
- * @param  [in]  userPin    PIN to use to login as user.
- * @param  [in]  userPinSz  Number of bytes in PIN.
- * @return  BAD_FUNC_ARG when token, dev and/or tokenName is NULL.
- * @return  WC_INIT_E when initializing token fails.
- * @return  WC_HW_E when another PKCS#11 library call fails.
- * @return  0 on success.
- */
-int wc_Pkcs11Token_Init(Pkcs11Token* token, Pkcs11Dev* dev, int slotId,
-    const char* tokenName, const unsigned char* userPin, int userPinSz)
-{
-    size_t tokenNameSz = 0;
-    if (tokenName != NULL) {
-        tokenNameSz = XSTRLEN(tokenName);
-    }
-    return Pkcs11Token_Init(token, dev, slotId, tokenName, tokenNameSz,
-        userPin, (size_t)userPinSz);
-}
-
-/**
- * Set up a token for use. Lookup by slotId or tokenName/size
- *
- * @param  [in]  token       Token object.
- * @param  [in]  dev         PKCS#11 device object.
- * @param  [in]  tokenName   Name of token to initialize.
- * @param  [in]  tokenNameSz Name size for token
- * @param  [in]  userPin     PIN to use to login as user.
- * @param  [in]  userPinSz   Number of bytes in PIN.
- * @return  BAD_FUNC_ARG when token, dev and/or tokenName is NULL.
- * @return  WC_INIT_E when initializing token fails.
- * @return  WC_HW_E when another PKCS#11 library call fails.
- * @return  0 on success.
- */
-int wc_Pkcs11Token_InitName(Pkcs11Token* token, Pkcs11Dev* dev,
-                             const char* tokenName, int tokenNameSz,
-                             const unsigned char* userPin, int userPinSz)
-{
-    return Pkcs11Token_Init(token, dev, -1, tokenName, (size_t)tokenNameSz,
-        userPin, (size_t)userPinSz);
 }
 
 /**
@@ -1032,9 +946,7 @@ static int Pkcs11CreateEccPublicKey(CK_OBJECT_HANDLE* publicKey,
         ecPoint[i++] = len;
         if (public_key->type == 0)
             public_key->type = ECC_PUBLICKEY;
-        PRIVATE_KEY_UNLOCK();
         ret = wc_ecc_export_x963(public_key, ecPoint + i, &len);
-        PRIVATE_KEY_LOCK();
     }
     if (ret == 0) {
         keyTemplate[4].pValue     = ecPoint;
@@ -2057,9 +1969,7 @@ static int Pkcs11FindEccKey(CK_OBJECT_HANDLE* key, CK_OBJECT_CLASS keyClass,
         ecPoint[i++] = len;
         if (eccKey->type == 0)
             eccKey->type = ECC_PUBLICKEY;
-        PRIVATE_KEY_UNLOCK();
         ret = wc_ecc_export_x963(eccKey, ecPoint + i, &len);
-        PRIVATE_KEY_LOCK();
     }
     if (ret == 0 && keyClass == CKO_PUBLIC_KEY) {
         keyTemplate[attrCnt].pValue     = ecPoint;
@@ -2112,7 +2022,7 @@ static int Pkcs11GetEccPublicKey(ecc_key* key, Pkcs11Session* session,
     word32         i = 0;
     int            curveIdx;
     unsigned char* point = NULL;
-    int            pointSz = 0;
+    int            pointSz;
     byte           tag;
     CK_RV          rv;
     CK_ATTRIBUTE   tmpl[] = {
@@ -2383,17 +2293,13 @@ static int Pkcs11ECDH(Pkcs11Session* session, wc_CryptoInfo* info)
         }
     }
     if (ret == 0) {
-        PRIVATE_KEY_UNLOCK();
         ret = wc_ecc_export_x963(info->pk.ecdh.public_key, NULL, &pointLen);
-        PRIVATE_KEY_LOCK();
         if (ret == LENGTH_ONLY_E) {
             point = (unsigned char*)XMALLOC(pointLen,
                                                  info->pk.ecdh.public_key->heap,
                                                        DYNAMIC_TYPE_ECC_BUFFER);
-            PRIVATE_KEY_UNLOCK();
             ret = wc_ecc_export_x963(info->pk.ecdh.public_key, point,
                                                                      &pointLen);
-            PRIVATE_KEY_LOCK();
         }
     }
 

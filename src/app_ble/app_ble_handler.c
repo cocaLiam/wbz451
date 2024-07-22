@@ -1,5 +1,22 @@
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+  Application BLE Source File
+
+  Company:
+    Microchip Technology Inc.
+
+  File Name:
+    app_ble_handler.c
+
+  Summary:
+    This file contains the Application BLE functions for this project.
+
+  Description:
+    This file contains the Application BLE functions for this project.
+ *******************************************************************************/
+
+// DOM-IGNORE-BEGIN
+/*******************************************************************************
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -20,23 +37,7 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-
-/*******************************************************************************
-  Application BLE Source File
-
-  Company:
-    Microchip Technology Inc.
-
-  File Name:
-    app_ble_handler.c
-
-  Summary:
-    This file contains the Application BLE functions for this project.
-
-  Description:
-    This file contains the Application BLE functions for this project.
- *******************************************************************************/
-
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
@@ -48,7 +49,7 @@
 #include "osal/osal_freertos_extend.h"
 #include "app_ble_handler.h"
 #include "peripheral/sercom/usart/plib_sercom0_usart.h"
-#include "system/console/sys_console.h"
+
 
 // *****************************************************************************
 // *****************************************************************************
@@ -63,92 +64,22 @@ extern uint16_t conn_hdl;
 // Section: Functions
 // *****************************************************************************
 // *****************************************************************************
-
-//#define APP_BLE_1M_PHY_ENABLE
-//#define APP_BLE_2M_PHY_ENABLE
-#define APP_BLE_CODED_PHY_ENABLE
-
-#ifdef APP_BLE_1M_PHY_ENABLE
-  #undef APP_BLE_2M_PHY_ENABLE
-  #undef APP_BLE_CODED_PHY_ENABLE
-#elif defined(APP_BLE_2M_PHY_ENABLE)
-  #undef APP_BLE_1M_PHY_ENABLE
-  #undef APP_BLE_CODED_PHY_ENABLE
-#elif defined(APP_BLE_CODED_PHY_ENABLE)
-  #undef APP_BLE_1M_PHY_ENABLE
-  #undef APP_BLE_2M_PHY_ENABLE
-#else
-  #define APP_BLE_CODED_PHY_ENABLE
-#endif
-
-
-#define APP_BLE_CODED_S8_ENABLE
-#ifndef APP_BLE_CODED_S8_ENABLE
-  #define APP_BLE_CODED_S2_ENABLE
-#endif
-
-
-static  int8_t phyOptions = BLE_GAP_PHY_PREF_NO;
-
-void SYS_CONSOLE_PRINT_PHY(uint8_t phy) {
-    switch (phy) {
-        case BLE_GAP_PHY_TYPE_LE_1M:
-            SYS_CONSOLE_PRINT("LE_1M \r\n");
-            break;
-        case BLE_GAP_PHY_TYPE_LE_2M:
-            SYS_CONSOLE_PRINT("LE_2M \r\n");
-            break;
-        case BLE_GAP_PHY_TYPE_LE_CODED:
-            SYS_CONSOLE_PRINT("LE_CODED");
-            if(phyOptions == BLE_GAP_PHY_PREF_S2)
-                SYS_CONSOLE_PRINT(" |S2\r\n");
-            else if(phyOptions == BLE_GAP_PHY_PREF_S8)
-                SYS_CONSOLE_PRINT(" |S8\r\n");
-            else
-                SYS_CONSOLE_PRINT("\r\n");
-            break;
-        default:
-            SYS_CONSOLE_PRINT("UNKOWN PHY \r\n");
-            break;
-    }
-};
-
-void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event) {
-    switch (p_event->eventId) {
+void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event)
+{
+    switch(p_event->eventId)
+    {
         case BLE_GAP_EVT_CONNECTED:
         {
             /* TODO: implement your application code.*/
-            SYS_CONSOLE_PRINT("\r\nConnected:\r\n");
+            SERCOM0_USART_Write((uint8_t *)"Connected\r\n",11);
             conn_hdl = p_event->eventField.evtConnect.connHandle;
-
-            uint8_t txPhys = 0, rxPhys = 0;
-            
-#ifdef APP_BLE_CODED_PHY_ENABLE
-            txPhys = BLE_GAP_PHY_OPTION_CODED;
-            rxPhys = BLE_GAP_PHY_OPTION_CODED;
-#ifdef APP_BLE_CODED_S2_ENABLE
-            phyOptions = BLE_GAP_PHY_PREF_S2;
-#else
-            phyOptions = BLE_GAP_PHY_PREF_S8;
-#endif
-            
-#elif defined(APP_BLE_2M_PHY_ENABLE)
-            txPhys = BLE_GAP_PHY_OPTION_2M;
-            rxPhys = BLE_GAP_PHY_OPTION_2M;
-            phyOptions = BLE_GAP_PHY_OPTION_NO_PREF;
-#else
-            txPhys = BLE_GAP_PHY_OPTION_1M;
-            rxPhys = BLE_GAP_PHY_OPTION_1M;
-            phyOptions = BLE_GAP_PHY_OPTION_NO_PREF;
-#endif
-            BLE_GAP_SetPhy(p_event->eventField.evtConnect.connHandle, txPhys, rxPhys, phyOptions);
         }
         break;
 
         case BLE_GAP_EVT_DISCONNECTED:
         {
             /* TODO: implement your application code.*/
-            SYS_CONSOLE_PRINT("\r\n\r\nDisconnected!\r\n");
+            SERCOM0_USART_Write((uint8_t *)"Disconnected\r\n",14);
         }
         break;
 
@@ -215,13 +146,6 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event) {
         case BLE_GAP_EVT_PHY_UPDATE:
         {
             /* TODO: implement your application code.*/
-            SYS_CONSOLE_PRINT("\r\nBLE_GAP_EVT_PHY_UPDATE:\r\n");
-            
-            SYS_CONSOLE_PRINT("tx_phy: ");
-            SYS_CONSOLE_PRINT_PHY(p_event->eventField.evtPhyUpdate.txPhy);
-
-            SYS_CONSOLE_PRINT("rx_phy: ");
-            SYS_CONSOLE_PRINT_PHY(p_event->eventField.evtPhyUpdate.rxPhy);
         }
         break;
 

@@ -1,5 +1,22 @@
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+  Application BLE Profile Source File
+
+  Company:
+    Microchip Technology Inc.
+
+  File Name:
+    app_trsps_handler.c
+
+  Summary:
+    This file contains the Application BLE functions for this project.
+
+  Description:
+    This file contains the Application BLE functions for this project.
+ *******************************************************************************/
+
+// DOM-IGNORE-BEGIN
+/*******************************************************************************
+* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -20,29 +37,15 @@
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
-
-/*******************************************************************************
-  Application BLE Profile Source File
-
-  Company:
-    Microchip Technology Inc.
-
-  File Name:
-    app_trsps_handler.c
-
-  Summary:
-    This file contains the Application BLE functions for this project.
-
-  Description:
-    This file contains the Application BLE functions for this project.
- *******************************************************************************/
-
+// DOM-IGNORE-END
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+#include "app_trsps_handler.h"
+
 #include <string.h>
 #include "stdint.h"
 #include "ble_trsps/ble_trsps.h"
@@ -98,22 +101,16 @@ void APP_TrspsEvtHandler(BLE_TRSPS_Event_T *p_event)
             uint8_t *data;
             // Retrieve received data length
             BLE_TRSPS_GetDataLength(p_event->eventField.onReceiveData.connHandle, &data_len);
-            while (data_len) {
-                // Allocate memory according to data length
-                data = OSAL_Malloc(data_len);
-                if (data == NULL)
-                    break;
-                // Retrieve received data
-                BLE_TRSPS_GetData(p_event->eventField.onReceiveData.connHandle, data);
-                // Output received data to UART
-                SERCOM0_USART_Write(data, data_len);
-                // Free memory
-                OSAL_Free(data);
-
-                //check again
-                data_len = 0;
-                BLE_TRSPS_GetDataLength(p_event->eventField.onReceiveData.connHandle, &data_len);
-            }
+            // Allocate memory according to data length
+            data = OSAL_Malloc(data_len);
+            if(data == NULL)
+            break;
+            // Retrieve received data
+            BLE_TRSPS_GetData(p_event->eventField.onReceiveData.connHandle, data);
+            // Output received data to UART
+            SERCOM0_USART_Write(data, data_len);
+            // Free memory
+            OSAL_Free(data);
         }
         break;
         

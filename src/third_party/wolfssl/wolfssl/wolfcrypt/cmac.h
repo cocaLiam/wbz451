@@ -56,17 +56,12 @@ struct Cmac {
 #ifdef WOLF_CRYPTO_CB
     int devId;
     void* devCtx;
-    #ifdef WOLFSSL_CAAM
+    #ifdef WOLFSSL_QNX_CAAM
     byte ctx[32]; /* hold state for save and return */
     word32 blackKey;
     word32 keylen;
     byte   initialized;
     #endif
-#endif
-#if defined(WOLFSSL_HASH_KEEP)
-    byte*  msg;
-    word32 used;
-    word32 len;
 #endif
 };
 
@@ -107,14 +102,6 @@ WOLFSSL_API
 int wc_AesCmacVerify(const byte* check, word32 checkSz,
                      const byte* in, word32 inSz,
                      const byte* key, word32 keySz);
-
-WOLFSSL_LOCAL
-void ShiftAndXorRb(byte* out, byte* in);
-
-#ifdef WOLFSSL_HASH_KEEP
-WOLFSSL_API
-int wc_CMAC_Grow(Cmac* cmac, const byte* in, int inSz);
-#endif
 
 #ifdef __cplusplus
     } /* extern "C" */

@@ -24,7 +24,7 @@
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2020 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -69,6 +69,12 @@
  * Add the following code:
     app_idle_task();
 
+ * Step 3
+ * ------
+ * Add code to the function:
+ *      vApplicationTickHook()
+ * Add the following code:
+    app_idle_updateRtcCnt(RTC_Timer32CounterGet());
 
  ********************************************************************/
 
