@@ -61,6 +61,7 @@ int main ( void )
 {
     /* Initialize all modules */
     SYS_Initialize ( NULL );
+    // SERCOM0_USART_Write((uint8_t *)"SYS_Initialize END \r\n",21);
 
     while ( true )
     {

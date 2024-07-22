@@ -163,20 +163,28 @@ void APP_Tasks ( void )
             if ((wakeSrc != DEVICE_DEEP_SLEEP_WAKE_INT0) && (wakeSrc != DEVICE_DEEP_SLEEP_WAKE_RTC))
             {  // INT0 도 아니고 , RTC 도 아닐떄
                 GPIO_RB0_Set();  //RED Reset 스위치 누르면 아주 잠깐 ON
-                RTC_Timer32Start();
-                DEVICE_EnterDeepSleep(false,0);
+                RTC_Timer32Start(); // 저전력 모드에서 사용하는 Timer 
+                                    // << 이게 있어야 저전력 모드에서 나온 후 실제 시간을 추정 할 수 있다. + 특정시간 이후 저전력모드 해제 같은 동작을 할 수 있다.
+                DEVICE_EnterDeepSleep(false,0);  // true 일 시, 딥 슬립 모드에 진입하기 전 RAM 상태가 딥슬립모드에서 깨어난 후에도 그대로 유지 됨.
+                // false 일 시, RAM 초기화
+
+                // 테스트 
+                APP_BleDsadvStart(true);
             }
             
             if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_INT0)
             {
                 GPIO_RB3_Set();  //green SW2 누르면 한번 반응 후
-                // APP_BleStackInit();
-                // APP_BleDsadvStart(false);  // false 일 시에는 초기화 과정이 없다.
+                APP_BleStackInit();
+                APP_BleDsadvStart(false);  
+                // false 일 시, BLE 스택 유지 ( RAM 에 있는 기존의 BLE 스택을 재사용 한다. ) 
+                //    >> 따라서 DEVICE_EnterDeepSleep(false,0) 면 RAM이 초기화 되므로 기존의 BLE 스택을 재사용 할 수 없다.
+                // true 일 시, BLE 스택 초기화 ( RAM 에 있는 기존의 BLE 스택을 사용하지 않고 BLE 를 초기화 한다. )
             }
             else   
             {
-                GPIO_RB5_Set();  //blue 반응하고 나서 블루 무한 깜빡이 // 연결시 Blue 계속 점등
-                // APP_BleDsadvStart(true);
+                // GPIO_RB5_Set();  //blue 반응하고 나서 블루 무한 깜빡이 // 연결시 Blue 계속 점등
+                APP_BleDsadvStart(true);
             }
 
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <executable name="dist/default/production/ble_deep_sleep_adv.X.production.elf">
+  <executable name="dist/default/debug/ble_deep_sleep_adv.X.debug.elf">
     <memory name="program">
       <units>bytes</units>
       <length>1032192</length>
-      <used>72721</used>
-      <free>959471</free>
+      <used>72697</used>
+      <free>959495</free>
     </memory>
     <memory name="data">
       <units>bytes</units>
