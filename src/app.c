@@ -171,7 +171,7 @@ void BLE_GAP_Advertise_start( void )
     // Start Advertisement 
     // param 설명 : Advertising 할지 안할지 여부, Advertising 의 주기 ( 0일시 딜레이 없이 Advertising)
     BLE_GAP_SetAdvEnable(0x01, 0x00);
-    SERCOM0_USART_Write((uint8_t *)"Advertising\r\n",13);
+    SERCOM0_USART_Write((uint8_t *)"Advertising -- \r\n",17);
 }
 
 
@@ -200,7 +200,7 @@ void APP_Tasks ( void )
             SERCOM0_USART_SettupOptions();
             //appData.appQueue = xQueueCreate( 10, sizeof(APP_Msg_T) );
             APP_BleStackInit();
-            
+
             BLE_GAP_Advertise_start();
 
             if (appInitialized)
