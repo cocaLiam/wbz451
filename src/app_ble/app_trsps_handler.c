@@ -67,7 +67,8 @@
 // *****************************************************************************
 
 void APP_TrspsEvtHandler(BLE_TRSPS_Event_T *p_event)
-{
+{   // app_ble.c 쪽에 보면 APP_TrspsEvtHandler 함수를 BLE_TRSPS_EventRegister(APP_TrspsEvtHandler); Event에 등록해줌
+    // 결국에 등록된 부분에서 Bluetooth 로 받은 data를 정제해서 넣어줌.
     switch(p_event->eventId)
     {
         case BLE_TRSPS_EVT_CTRL_STATUS:
@@ -108,6 +109,7 @@ void APP_TrspsEvtHandler(BLE_TRSPS_Event_T *p_event)
             // Retrieve received data
             BLE_TRSPS_GetData(p_event->eventField.onReceiveData.connHandle, data);
             // Output received data to UART
+            SERCOM0_USART_Write((uint8_t *)"\r\n -> RECIEVED FROM Peripheral \r\n", 33);
             SERCOM0_USART_Write(data, data_len);
             // Free memory
             OSAL_Free(data);
