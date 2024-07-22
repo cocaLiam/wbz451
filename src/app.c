@@ -155,7 +155,7 @@ void APP_UartCBHandler()
     BLE_TRSPS_SendData(conn_hdl, 1, &uart_data);      
 }
 
-void SERCOM0__USART_SettupOptions( void )
+void SERCOM0_USART_SettupOptions( void )
 {
     // Enable UART Read ( SERCOM0_UART Read 기능 온 )
     SERCOM0_USART_ReadNotificationEnable(true, true);
@@ -164,6 +164,10 @@ void SERCOM0__USART_SettupOptions( void )
     SERCOM0_USART_ReadThresholdSet(1);
     // Register the UART RX callback function
     SERCOM0_USART_ReadCallbackRegister(uart_cb, (uintptr_t)NULL);
+}
+
+void BLE_GAP_Advertise_start( void )
+{
     // Start Advertisement 
     // param 설명 : Advertising 할지 안할지 여부, Advertising 의 주기 ( 0일시 딜레이 없이 Advertising)
     BLE_GAP_SetAdvEnable(0x01, 0x00);
@@ -192,8 +196,12 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:
         {
             bool appInitialized = true;
+
+            SERCOM0_USART_SettupOptions();
             //appData.appQueue = xQueueCreate( 10, sizeof(APP_Msg_T) );
             APP_BleStackInit();
+            
+            BLE_GAP_Advertise_start();
 
             if (appInitialized)
             {
