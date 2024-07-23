@@ -86,6 +86,7 @@ static BLE_DD_Config_T         ddConfig;
 
 static void APP_BleStackCb(STACK_Event_T *p_stack)
 {
+    // SERCOM0_USART_Write((uint8_t *)"11 \r\n",5);
     STACK_Event_T stackEvent;
     APP_Msg_T   appMsg;
     APP_Msg_T   *p_appMsg;
@@ -167,16 +168,6 @@ void APP_BleStackEvtHandler(STACK_Event_T *p_stackEvt)
     /* Transparent Profile */
     BLE_TRSPS_BleEventHandler(p_stackEvt);
 
-    
-
-
-
-    
-    
-
-    
-
-
     OSAL_Free(p_stackEvt->p_event);
 }
 
@@ -187,11 +178,6 @@ void APP_BleStackLogHandler(BT_SYS_LogEvent_T *p_logEvt)
     
 static void APP_DdEvtHandler(BLE_DD_Event_T *p_event)
 {
-
-
-
-
-
 }
 
 

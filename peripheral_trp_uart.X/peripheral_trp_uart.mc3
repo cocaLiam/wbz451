@@ -811,6 +811,28 @@
          <value>__ROOTVIEW</value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="SERVICE_TRS" name="CHECKED_TRS_RX_UUID"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;SERVICE_TRS&gt;
+  &lt;SERVICE_TRS dnOrder=&quot;0&quot; id=&quot;CHECKED_TRS_RX_UUID&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;SERVICE_TRS&quot; value=&quot;0xB3, 0x9B, 0x72, 0x34, 0xBE, 0xEC, 0xD4, 0xA8, 0xF4, 0x43, 0x41, 0x88, 0x43, 0x53, 0x53, 0x49&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/SERVICE_TRS&gt;
+&lt;/SERVICE_TRS&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="SERVICE_TRS" name="TRS_RX_UUID"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;SERVICE_TRS&gt;
+  &lt;SERVICE_TRS dnOrder=&quot;0&quot; id=&quot;TRS_RX_UUID&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;B39B7234BEECD4A8F443418843535349&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/SERVICE_TRS&gt;
+&lt;/SERVICE_TRS&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="cmsis" name="#&amp;__MCC_Group_Parrent_id"/>
          <value>__ROOTVIEW</value>
       </entry>

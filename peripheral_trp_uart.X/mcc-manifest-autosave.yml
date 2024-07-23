@@ -2,12 +2,12 @@
 
 manifest_file_version: 1.0.0
 project: adv_trans_uart
-creation_date: 2024-07-22T16:10:03.512+09:00[Asia/Seoul]
+creation_date: 2024-07-23T09:35:10.563+09:00[Asia/Seoul]
 operating_system: Windows 10
 mcc_mode: IDE
 mcc_mode_version: v6.20
 device_name: WBZ451
-compiler: XC32 4.21
+compiler: XC32 4.40
 mcc_version: 5.5.1
 mcc_core_version: 5.7.1
 content_manager_version: 5.0.0

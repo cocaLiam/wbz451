@@ -213,10 +213,14 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
+            // SERCOM0_USART_Write((uint8_t *)"00 \r\n",5);
+            // 여기서 OSAL Queue 로 appMsg 를 받을 때까지 무한 대기 상태
             if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
-            {
+            {   
+                // SERCOM0_USART_Write((uint8_t *)"22 \r\n",5);
                 if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
                 {
+                    // SERCOM0_USART_Write((uint8_t *)"33 \r\n",5);
                     // Pass BLE Stack Event Message to User Application for handling
                     APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);
                 }
