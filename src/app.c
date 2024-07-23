@@ -129,24 +129,78 @@ void APP_Initialize ( void )
 uint16_t conn_hdl;// connection handle info captured @BLE_GAP_EVT_CONNECTED event
 uint16_t ret;
 uint8_t uart_data;
+
 void uart_cb(SERCOM_USART_EVENT event, uintptr_t context)
 {
   APP_Msg_T   appMsg;  
   // If RX data from UART reached threshold (previously set to 1)
   if( event == SERCOM_USART_EVENT_READ_THRESHOLD_REACHED )
   {
+    SERCOM0_USART_Write((uint8_t *)"\r\n - READ FROM Terminal \r\n", 26);
     // Read 1 byte data from UART
+    // Teraterm에서 치는 데이터들 Read [ 1byte(1글자)씩 ]
     SERCOM0_USART_Read(&uart_data, 1);
     appMsg.msgId = APP_MSG_UART_CB;
-    OSAL_QUEUE_Send(&appData.appQueue, &appMsg, 0);     
+    // OSAL 큐에 넣음으로써 결국엔 APP_STATE_SERVICE_TASKS 상태인 appData.state 안에
+    //   else if(p_appMsg->msgId==APP_MSG_UART_CB) 해당 조건문에서 다뤄짐
+    OSAL_QUEUE_Send(&appData.appQueue, &appMsg, 0);
   }
 }
 
 void APP_UartCBHandler()
 {
     // Send the data from UART to connected device through Transparent service
+    SERCOM0_USART_Write((uint8_t *)" <- SEND TO Peripheral \r\n", 25);
+    // conn_hdl = p_event->eventField.evtConnect.connHandle;  <- Connect 시 해당 변수에 connect 핸들러 대입됨
+    // 1 <- 1byte씩 data를 전송
+    // uart_data <- 보낼데이터 ( 여기서는 TeraTerm 에 있는 Input Data )
     BLE_TRSPS_SendData(conn_hdl, 1, &uart_data);      
 }
+
+void SERCOM0_USART_SettupOptions( void )
+{
+    // Enable UART Read ( SERCOM0_UART Read 기능 온 )
+    SERCOM0_USART_ReadNotificationEnable(true, true);
+    // Set UART RX notification threshold to be 1
+    // param 설명 : SERCOM0_UART 에서 1byte 씩 읽어 오겠다는 설정
+    SERCOM0_USART_ReadThresholdSet(1);
+    // Register the UART RX callback function
+    SERCOM0_USART_ReadCallbackRegister(uart_cb, (uintptr_t)NULL);
+}
+
+
+// void BLE_GAP_Advertise_start( void )
+// {
+//     // Start Advertisement 
+//     // param 설명 : Advertising 할지 안할지 여부, Advertising 의 주기 ( 0일시 딜레이 없이 Advertising)
+//     BLE_GAP_SetAdvEnable(0x01, 0x00);
+//     SERCOM0_USART_Write((uint8_t *)"Advertising -- \r\n",17);
+// }
+
+
+void BLE_GAP_Advertise_start( void )
+{
+    // // Start Advertisement 
+    // // param 설명 : Advertising 할지 안할지 여부, Advertising 의 주기 ( 0일시 딜레이 없이 Advertising)
+    // BLE_GAP_SetAdvEnable(0x01, 0x00);
+    // SERCOM0_USART_Write((uint8_t *)"Advertising\r\n",13);
+
+    // Enable Ext Adv
+    BLE_GAP_ExtAdvEnableParams_T extAdvEnableParam;
+    // 고유한 광고 핸들을 나타내는 값
+    extAdvEnableParam.advHandle = 0x00; // Adv Set - 0x00
+    // 광고 지속 시간
+    extAdvEnableParam.duration = 0;
+    // 최대 광고 횟수
+    extAdvEnableParam.maxExtAdvEvts = 0; // Enable Cont ADV 
+    // Param 설명 : 확장 광고 사용유무( true 일시 하나 이상의 광고 세트 활성화) , 광고세트의 수(1일시 단일)
+    ret = BLE_GAP_SetExtAdvEnable(true, 0x01,  &extAdvEnableParam);
+    SERCOM0_USART_Write((uint8_t *)"Advertising -- \r\n",17);
+    if (ret == MBA_RES_SUCCESS){
+    SYS_CONSOLE_PRINT("\r\n\r\n------Ext Advertising...\r\n");  
+    }
+}
+
 /******************************************************************************
   Function:
     void APP_Tasks ( void )
@@ -168,27 +222,15 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:
         {
             bool appInitialized = true;
+
+            SERCOM0_USART_SettupOptions();
             //appData.appQueue = xQueueCreate( 10, sizeof(APP_Msg_T) );
-            // Enable UART Read
-            SERCOM0_USART_ReadNotificationEnable(true, true);
-            // Set UART RX notification threshold to be 1
-            SERCOM0_USART_ReadThresholdSet(1);
-            // Register the UART RX callback function
-            SERCOM0_USART_ReadCallbackRegister(uart_cb, (uintptr_t)NULL);
+
             APP_BleStackInit();
             
-            // Enable Ext Adv
-            BLE_GAP_ExtAdvEnableParams_T extAdvEnableParam;
-            extAdvEnableParam.advHandle = 0x00; // Adv Set - 0x00
-            extAdvEnableParam.duration = 0;
-            extAdvEnableParam.maxExtAdvEvts = 0; // Enable Cont ADV 
-            ret = BLE_GAP_SetExtAdvEnable(true, 0x01,  &extAdvEnableParam);
-            if (ret == MBA_RES_SUCCESS)
-            SYS_CONSOLE_PRINT("\r\n\r\n------Ext Advertising...\r\n");  
+            BLE_GAP_Advertise_start();
             
-            if (appInitialized)
-            {
-
+            if (appInitialized){
                 appData.state = APP_STATE_SERVICE_TASKS;
             }
             break;
@@ -196,15 +238,20 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
+            SERCOM0_USART_Write((uint8_t *)"-- \r\n",5);
+            // 여기서 OSAL Queue 로 appMsg 를 받을 때까지 무한 대기 상태
             if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
-            {
+            {   
+                SERCOM0_USART_Write((uint8_t *)"00 \r\n",5);
                 if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
                 {
+                    SERCOM0_USART_Write((uint8_t *)"11 \r\n",5);
                     // Pass BLE Stack Event Message to User Application for handling
                     APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);
                 }
                 else if(p_appMsg->msgId==APP_MSG_BLE_STACK_LOG)
                 {
+                    SERCOM0_USART_Write((uint8_t *)"22 \r\n",5);
                     // Pass BLE LOG Event Message to User Application for handling
                     APP_BleStackLogHandler((BT_SYS_LogEvent_T *)p_appMsg->msgData);
                 }

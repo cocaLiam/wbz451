@@ -118,6 +118,7 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event) {
         case BLE_GAP_EVT_CONNECTED:
         {
             /* TODO: implement your application code.*/
+            SERCOM0_USART_Write((uint8_t *)"Connected\r\n",11);
             SYS_CONSOLE_PRINT("\r\nConnected:\r\n");
             conn_hdl = p_event->eventField.evtConnect.connHandle;
 

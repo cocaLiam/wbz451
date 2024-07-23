@@ -106,6 +106,7 @@ void APP_TrspsEvtHandler(BLE_TRSPS_Event_T *p_event)
                 // Retrieve received data
                 BLE_TRSPS_GetData(p_event->eventField.onReceiveData.connHandle, data);
                 // Output received data to UART
+                SERCOM0_USART_Write((uint8_t *)"\r\n -> RECIEVED FROM Peripheral \r\n", 33);
                 SERCOM0_USART_Write(data, data_len);
                 // Free memory
                 OSAL_Free(data);

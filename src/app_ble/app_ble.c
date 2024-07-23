@@ -86,6 +86,7 @@
 
 static void APP_BleStackCb(STACK_Event_T *p_stack)
 {
+    SERCOM0_USART_Write((uint8_t *)"== \r\n",5);
     STACK_Event_T stackEvent;
     APP_Msg_T   appMsg;
     APP_Msg_T   *p_appMsg;
@@ -152,29 +153,17 @@ void APP_BleStackEvtHandler(STACK_Event_T *p_stackEvt)
             APP_GattEvtHandler((GATT_Event_T *)p_stackEvt->p_event);
         }
         break;
-
+        
         default:
         break;
-
     } 
 
     //Direct event to BLE middleware
     BLE_DM_BleEventHandler(p_stackEvt);
 
-
     //Direct event to BLE profiles
     /* Transparent Profile */
     BLE_TRSPS_BleEventHandler(p_stackEvt);
-
-    
-
-
-
-    
-    
-
-    
-
 
     OSAL_Free(p_stackEvt->p_event);
 }
