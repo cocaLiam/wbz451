@@ -611,7 +611,7 @@
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;lib_wolfcrypt&quot; x=&quot;362&quot; y=&quot;262&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;nvm&quot; x=&quot;27&quot; y=&quot;114&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;11&quot; id=&quot;pdsSystem&quot; x=&quot;170&quot; y=&quot;60&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;pic32cx_bz2_devsupport&quot; x=&quot;169&quot; y=&quot;265&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;pic32cx_bz2_devsupport&quot; x=&quot;168&quot; y=&quot;265&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;13&quot; id=&quot;rtc&quot; x=&quot;21&quot; y=&quot;376&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
