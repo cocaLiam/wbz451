@@ -142,6 +142,10 @@ void APP_Initialize ( void )
     See prototype in app.h.
  */
 
+#include <stdio.h>
+#include <stdint.h>
+#include "definitions.h"
+
 void APP_Tasks ( void )
 {
     APP_Msg_T    appMsg[1];

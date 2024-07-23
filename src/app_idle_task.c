@@ -108,8 +108,15 @@ static uint32_t s_ulStoppedTimerCompensationRtcS = 0UL;
 static uint32_t s_rtcCntBeforeSleep = 0UL;
 static bool s_chkRtcCnt;
 
+static int tick_count = 0; // 변수의 범위를 파일로 제한
+
 void app_idle_task( void )
 {
+    tick_count++;
+    if (tick_count <= 5){
+        printf(" - app_idle_task is START %d \r\n",tick_count);
+    }
+
     uint8_t PDS_Items_Pending = PDS_GetPendingItemsCount();
     bool RF_Cal_Needed = RF_NeedCal(); // device_support library API
     uint8_t BT_RF_Suspended = 0;

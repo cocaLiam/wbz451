@@ -1,0 +1,19 @@
+{
+    "files.associations": {
+        "stdio.h": "c",
+        "definitions.h": "c",
+        "stdint.h": "c",
+        "stdlib.h": "c",
+        "app_ble.h": "c",
+        "stdbool.h": "c",
+        "stddef.h": "c",
+        "sys_cache.h": "c",
+        "osal.h": "c",
+        "sys_debug.h": "c",
+        "app.h": "c",
+        "info_block.h": "c",
+        "app_tick_task.h": "c",
+        "app_idle_task.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

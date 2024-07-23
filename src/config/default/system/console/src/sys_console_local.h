@@ -1,20 +1,20 @@
 /*******************************************************************************
- System Interrupts File
+  Console System Service Local Data Structures
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    interrupt.h
+    sys_console_local.h
 
   Summary:
-    Interrupt vectors mapping
+    Console System Service local declarations and definitions.
 
   Description:
-    This file contains declarations of device vectors used by Harmony 3
- *******************************************************************************/
+    This file contains the Console System Service local declarations and definitions.
+*******************************************************************************/
 
-// DOM-IGNORE-BEGIN
+//DOM-IGNORE-BEGIN
 /*******************************************************************************
 * Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
 *
@@ -36,41 +36,48 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
+*******************************************************************************/
+//DOM-IGNORE-END
+
+
+#ifndef SYS_CONSOLE_LOCAL_H
+#define SYS_CONSOLE_LOCAL_H
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: File includes
+// *****************************************************************************
+// *****************************************************************************
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+// DOM-IGNORE-BEGIN
+#ifdef __cplusplus  // Provide C++ Compatibility
+
+extern "C" {
+
+#endif
 // DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
-
 // *****************************************************************************
 // *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
-#include <stdint.h>
-
-
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Handler Routines
+// Section: Data Type Definitions
 // *****************************************************************************
 // *****************************************************************************
 
-void Reset_Handler (void);
-void NonMaskableInt_Handler (void);
-void HardFault_Handler (void);
-void MemoryManagement_Handler (void);
-void BusFault_Handler (void);
-void UsageFault_Handler (void);
-void vPortSVCHandler (void);
-void DebugMonitor_Handler (void);
-void xPortPendSVHandler (void);
-void xPortSysTickHandler (void);
-void RTC_InterruptHandler (void);
-void NVM_InterruptHandler (void);
-void SERCOM0_USART_InterruptHandler (void);
+typedef uintptr_t CONSOLE_DEVICE_INDEX;
 
+//DOM-IGNORE-BEGIN
+#ifdef __cplusplus
+}
+#endif
+//DOM-IGNORE-END
 
+#endif //#ifndef SYS_CONSOLE_LOCAL_H
 
-#endif // INTERRUPTS_H
+/*******************************************************************************
+ End of File
+*/
