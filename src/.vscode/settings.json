@@ -1,0 +1,8 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "plib_gpio.h": "c",
+        "definitions.h": "c",
+        "custom_package.h": "c"
+    }
+}

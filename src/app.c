@@ -28,6 +28,7 @@
 // *****************************************************************************
 
 #include "app.h"
+#include "custom_package/custom_package.h"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -90,7 +91,6 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-
 
 
     /* TODO: Initialize your application's state machine and other

@@ -4,7 +4,7 @@
 
 
 project: CUSTOM_PACKAGE
-creation_date: 2024-07-23T15:45:45.328+09:00[Asia/Seoul]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
+creation_date: 2024-07-24T09:31:11.577+09:00[Asia/Seoul]    # ISO 8601 format: https://www.w3.org/TR/NOTE-datetime
 operating_system: Windows 10
 mcc_mode: IDE            # [IDE|Standalone|Headless]
 mcc_version: v5.5.1

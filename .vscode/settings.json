@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "custom_package.h": "c",
+        "definitions.h": "c",
+        "sys_debug.h": "c",
+        "system.h": "c",
+        "system_common.h": "c",
+        "plib_tc0.h": "c",
+        "plib_eic.h": "c",
+        "plib_gpio.h": "c",
+        "stdint.h": "c",
+        "stdbool.h": "c",
+        "freertos.h": "c",
+        "stdio.h": "c"
+    },
+    "C_Cpp.default.compilerPath": "",
+    "cSpell.words": [
+        "GPIO"
+    ]
+}

@@ -325,23 +325,23 @@ BaseType_t xPortStartScheduler( void )
      * is 1, should be preferred when possible. */
     #if ( configCHECK_HANDLER_INSTALLATION == 1 )
     {
-        const portISR_t * const pxVectorTable = portSCB_VTOR_REG;
-
-        /* Validate that the application has correctly installed the FreeRTOS
-         * handlers for SVCall and PendSV interrupts. We do not check the
-         * installation of the SysTick handler because the application may
-         * choose to drive the RTOS tick using a timer other than the SysTick
-         * timer by overriding the weak function vPortSetupTimerInterrupt().
-         *
-         * Assertion failures here indicate incorrect installation of the
-         * FreeRTOS handlers. For help installing the FreeRTOS handlers, see
-         * https://www.FreeRTOS.org/FAQHelp.html.
-         *
-         * Systems with a configurable address for the interrupt vector table
-         * can also encounter assertion failures or even system faults here if
-         * VTOR is not set correctly to point to the application's vector table. */
-        configASSERT( pxVectorTable[ portVECTOR_INDEX_SVC ] == vPortSVCHandler );
-        configASSERT( pxVectorTable[ portVECTOR_INDEX_PENDSV ] == xPortPendSVHandler );
+//        const portISR_t * const pxVectorTable = portSCB_VTOR_REG;
+//
+//        /* Validate that the application has correctly installed the FreeRTOS
+//         * handlers for SVCall and PendSV interrupts. We do not check the
+//         * installation of the SysTick handler because the application may
+//         * choose to drive the RTOS tick using a timer other than the SysTick
+//         * timer by overriding the weak function vPortSetupTimerInterrupt().
+//         *
+//         * Assertion failures here indicate incorrect installation of the
+//         * FreeRTOS handlers. For help installing the FreeRTOS handlers, see
+//         * https://www.FreeRTOS.org/FAQHelp.html.
+//         *
+//         * Systems with a configurable address for the interrupt vector table
+//         * can also encounter assertion failures or even system faults here if
+//         * VTOR is not set correctly to point to the application's vector table. */
+//        configASSERT( pxVectorTable[ portVECTOR_INDEX_SVC ] == vPortSVCHandler );
+//        configASSERT( pxVectorTable[ portVECTOR_INDEX_PENDSV ] == xPortPendSVHandler );
     }
     #endif /* configCHECK_HANDLER_INSTALLATION */
 

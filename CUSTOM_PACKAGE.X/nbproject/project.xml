@@ -8,7 +8,9 @@
             <make-project-type>0</make-project-type>
             <sourceEncoding>EUC-KR</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList/>
+            <sourceRootList>
+                <sourceRootElem>../src/custom_package</sourceRootElem>
+            </sourceRootList>
             <confList>
                 <confElem>
                     <name>default</name>
