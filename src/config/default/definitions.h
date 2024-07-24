@@ -51,8 +51,7 @@
 #include <stdio.h>
 #include "crypto/crypto.h"
 #include "ble/lib/include/bt_sys.h"
-#include "peripheral/sercom/usart/plib_sercom3_usart.h"
-#include "peripheral/evsys/plib_evsys.h"
+#include "peripheral/sercom/usart/plib_sercom1_usart.h"
 /*******************************************************************************
 * Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
@@ -77,7 +76,7 @@
 *******************************************************************************/
 #include "driver/pds/include/pds.h"
 #include "driver/pds/include/pds_config.h"
-#include "peripheral/sercom/usart/plib_sercom0_usart.h"
+#include "peripheral/evsys/plib_evsys.h"
 #include "peripheral/clk/plib_clk.h"
 #include "peripheral/gpio/plib_gpio.h"
 #include "peripheral/nvic/plib_nvic.h"
@@ -85,8 +84,6 @@
 #include "peripheral/rtc/plib_rtc.h"
 #include "peripheral/nvm/plib_nvm.h"
 #include "wolfssl/wolfcrypt/port/pic32/crypt_wolfcryptcb.h"
-#include "system/console/sys_console.h"
-#include "system/console/src/sys_console_uart_definitions.h"
 #include "FreeRTOS.h"
 #include "task.h"
 /*******************************************************************************
@@ -128,7 +125,6 @@
 // Custom include
 #include "app_tick_task.h"
 #include "app_idle_task.h"
-
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -257,9 +253,7 @@ Remarks:
 
 typedef struct
 {
-    SYS_MODULE_OBJ  sysConsole0;
-
-
+    char reserved;
 } SYSTEM_OBJECTS;
 
 // *****************************************************************************

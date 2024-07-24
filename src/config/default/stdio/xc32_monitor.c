@@ -52,7 +52,7 @@ int read(int handle, void *buffer, unsigned int len)
     {
         do
         {
-            success = SERCOM3_USART_Read(buffer, 1);
+            success = SERCOM1_USART_Read(buffer, 1);
         }while( !success);
         nChars = 1;
     }
@@ -66,7 +66,7 @@ int write(int handle, void * buffer, size_t count)
    {
        do
        {
-           success = SERCOM3_USART_Write(buffer, count);
+           success = SERCOM1_USART_Write(buffer, count);
        }while( !success);
    }
    return (int)count;

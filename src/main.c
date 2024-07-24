@@ -38,6 +38,9 @@ int main ( void )
 {
     /* Initialize all modules */
     SYS_Initialize ( NULL );
+    printf("printf func check \r\n");
+    SERCOM1_USART_Write((uint8_t *)"SERCOM1_USART_Write func check \r\n",33);
+    // SYS_CONSOLE_PRINT("SYS_CONSOLE_PRINT func Check \r\n");
 
     while ( true )
     {
