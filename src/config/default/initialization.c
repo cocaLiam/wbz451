@@ -236,37 +236,28 @@ void SYS_Initialize ( void* data )
 
     STDIO_BufferModeSet();
 
-
-  
     CLOCK_Initialize();
     /* Configure Prefetch, Wait States */
     PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk)))
                                     | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
 
+	  GPIO_Initialize();
 
-
-	GPIO_Initialize();
-
-    SERCOM1_USART_Initialize();
+    SERCOM1_USART_Initialize(); 
+    // STDIO_BufferModeSet();, CLOCK_Initialize();, GPIO_Initialize(); 가 선언되고 난뒤에 SERCOM1_USART_Initialize(); 초기화를 할 것.
+    printf("SERCOM1_USART_Initialize END \r\n");
 
     EVSYS_Initialize();
-
-
 
     /* MISRAC 2012 deviation block start */
     /* Following MISRA-C rules deviated in this block  */
     /* MISRA C-2012 Rule 11.3 - Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
     /* MISRA C-2012 Rule 11.8 - Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
 
-
-
-
     /* MISRAC 2012 deviation block end */
     APP_Initialize();
 
-
     NVIC_Initialize();
-
 
     /* MISRAC 2012 deviation block end */
 }

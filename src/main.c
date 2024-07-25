@@ -44,7 +44,7 @@ int main ( void )
     printf("SYS_Initialize END \r\n");
     GPIO_RB3_Set();
     SERCOM1_USART_Write((uint8_t *)"SYS_Initialize END \r\n",21);
-//    vTaskDelay(1000); // 1000틱 딜레이 1틱 == 1ms == 0.0001 초임. 따라서 1000틱은 1초
+//    vTaskDelay(1000); // task.c 에 있는 vTaskStartScheduler(); 함수가 호출되기 전 까진 쓰면 안된다
 //    GPIO_RB3_Clear();
 
 
