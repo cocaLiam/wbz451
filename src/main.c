@@ -38,9 +38,14 @@ int main ( void )
 {
 //    /* Initialize all modules */
     SYS_Initialize ( NULL );
-    // 반드시 SERCOM0_USART_Write 는 SYS_Initialize 함수 안에 있는 
-    // SERCOM0_USART_Initialize(); 초기화 작업을 해준 후 써야 한다.
-    SERCOM0_USART_Write((uint8_t *)"SYS_Initialize END \r\n",21);
+    // 반드시 SERCOM1_USART_Write 는 SYS_Initialize 함수 안에 있는 
+    // SERCOM1_USART_Initialize(); 초기화 작업을 해준 후 써야 한다.
+
+    printf("SYS_Initialize END \r\n");
+    GPIO_RB3_Set();
+    SERCOM1_USART_Write((uint8_t *)"SYS_Initialize END \r\n",21);
+//    vTaskDelay(1000); // 1000틱 딜레이 1틱 == 1ms == 0.0001 초임. 따라서 1000틱은 1초
+//    GPIO_RB3_Clear();
 
 
     while ( true )

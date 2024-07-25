@@ -94,7 +94,6 @@ void APP_Initialize ( void )
     appData.state = APP_STATE_INIT;
 
 
-
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
@@ -111,10 +110,11 @@ void APP_Initialize ( void )
     
 void APP_Tasks ( void )
 {
+    // vTaskDelay(100000); // 100초 딜레이 // xTaskAbortDelay(xAPP_Tasks); 함수로 딜레이 중단
     vTaskDelay(1000); // 1000틱 딜레이 1틱 == 1ms == 0.0001 초임. 따라서 1000틱은 1초
+    GPIO_RB3_Clear();
     
     print_short_string("#####APP_MAIN##### \r\n");
-    vTaskDelay(100000); // 100초 딜레이 // xTaskAbortDelay(xAPP_Tasks); 함수로 딜레이 중단
     /* Check the application's current state. */
     switch ( appData.state )
     {

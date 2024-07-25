@@ -89,40 +89,37 @@ static void lAPP_Tasks(  void *pvParameters  )
 */
 void SYS_Tasks ( void )
 {
+    /* Maintain system services */
+
+
+    /* Maintain Device Drivers */
+
+
+    /* Maintain Middleware & Other Libraries */
+
+
+    /* Maintain the application's state machine. */
+        /* Create OS Thread for APP_Tasks. */
     (void) xTaskCreate((TaskFunction_t) lAPP_Tasks,
                 "APP_Tasks",
                 1024,
                 NULL,
-                0,
+                1,
                 &xAPP_Tasks);
+
+
+
+
+    /* Start RTOS Scheduler. */
+
+     /**********************************************************************
+     * Create all Threads for APP Tasks before starting FreeRTOS Scheduler *
+     ***********************************************************************/
     vTaskStartScheduler(); /* This function never returns. */
+
 }
 
 /*******************************************************************************
  End of File
  */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

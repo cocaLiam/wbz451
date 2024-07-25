@@ -61,11 +61,16 @@ void GPIO_Initialize ( void )
  
           /* PORTA Initialization */
     /* PORTB Initialization */
+    GPIOB_REGS->GPIO_LAT = 0x0U; /* Initial Latch Value */
+    GPIOB_REGS->GPIO_TRISCLR = 0x8U; /* Direction Control */
+    GPIOB_REGS->GPIO_ANSELCLR = 0x8U; /* Digital Mode Enable */
 
 
     /* PPS Input Remapping */
+    PPS_REGS->PPS_SCOM1P1R = 1U;
 
     /* PPS Output Remapping */
+    PPS_REGS->PPS_RPA5G1R = 4U;
 
 
 }

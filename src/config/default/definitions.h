@@ -48,14 +48,13 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include "peripheral/sercom/usart/plib_sercom1_usart.h"
 #include "peripheral/evsys/plib_evsys.h"
-#include "peripheral/sercom/usart/plib_sercom0_usart.h"
 #include "peripheral/clk/plib_clk.h"
 #include "peripheral/gpio/plib_gpio.h"
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/cmcc/plib_cmcc.h"
-#include "system/console/sys_console.h"
-#include "system/console/src/sys_console_uart_definitions.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "system/int/sys_int.h"
@@ -197,9 +196,7 @@ Remarks:
 
 typedef struct
 {
-    SYS_MODULE_OBJ  sysConsole0;
-
-
+    char reserved;
 } SYSTEM_OBJECTS;
 
 // *****************************************************************************

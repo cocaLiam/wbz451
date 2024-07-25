@@ -23,7 +23,7 @@ print_short_string("tick Count 1: %d\r\n", 변수);
 // // dynamic variable print method 1 <- origin code
 //     char print_text[snprintf(NULL, 0, "tick Count : %d const char*\r\n", tick_check_val) + 1];
 //     snprintf(print_text, sizeof(print_text), "tick Count : %d const char*\r\n", tick_check_val);
-//     SERCOM0_USART_Write((uint8_t *)print_text, strlen(print_text));
+//     SERCOM1_USART_Write((uint8_t *)print_text, strlen(print_text));
 */
     va_list args;
     va_start(args, format);
@@ -35,7 +35,7 @@ print_short_string("tick Count 1: %d\r\n", 변수);
     vsnprintf(print_text, sizeof(print_text), format, args);
     va_end(args);
 
-    SERCOM0_USART_Write((uint8_t *)print_text, strlen(print_text));
+    SERCOM1_USART_Write((uint8_t *)print_text, strlen(print_text));
 }
 
 // 2번 방법: 동적 메모리 할당 사용 [ 힙 메모리 ]
@@ -57,7 +57,7 @@ print_long_string("tick Count 2: %d\r\n", 변수);
 //     if (asprintf(&print_text, "tick Count : %d const char*\r\n", tick_check_val) == -1) {
 //         // Memory alloc ERROR Handling
 //     }
-//     SERCOM0_USART_Write((uint8_t *)print_text, strlen(print_text));
+//     SERCOM1_USART_Write((uint8_t *)print_text, strlen(print_text));
 //     free(print_text);
 */
     va_list args;
@@ -71,6 +71,6 @@ print_long_string("tick Count 2: %d\r\n", 변수);
     }
     va_end(args);
 
-    SERCOM0_USART_Write((uint8_t *)print_text, strlen(print_text));
+    SERCOM1_USART_Write((uint8_t *)print_text, strlen(print_text));
     free(print_text);
 }

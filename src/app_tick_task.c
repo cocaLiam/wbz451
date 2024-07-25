@@ -32,7 +32,7 @@ void check_current_task_name( void ){
     xTaskHandle = xTaskGetCurrentTaskHandle();
 
     snprintf(buffer, sizeof(buffer), "Current task name: %s\r\n", pcTaskGetName(xTaskHandle));
-    SERCOM0_USART_Write((uint8_t *)buffer, strlen(buffer));
+    SERCOM1_USART_Write((uint8_t *)buffer, strlen(buffer));
 }
 
 void check_all_task_list( void ){
@@ -56,5 +56,5 @@ void check_all_task_list( void ){
     char taskList[256];
     vTaskList(taskList);
     
-    SERCOM0_USART_Write((uint8_t *)taskList, strlen(taskList));
+    SERCOM1_USART_Write((uint8_t *)taskList, strlen(taskList));
 }

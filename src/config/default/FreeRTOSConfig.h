@@ -45,7 +45,6 @@
 #define configUSE_PREEMPTION                    1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
 #define configUSE_TICKLESS_IDLE                 0
-#define configEXPECTED_IDLE_TIME_BEFORE_SLEEP   5
 #define configCPU_CLOCK_HZ                      ( 64000000UL )
 #define configTICK_RATE_HZ                      ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES                    ( 5UL )
@@ -121,38 +120,6 @@
 #define INCLUDE_uxTaskGetStackHighWaterMark2    0
 #define INCLUDE_xTaskResumeFromISR              0
 
+
 /* MISRAC 2012 deviation block end */
 #endif /* FREERTOS_CONFIG_H */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
