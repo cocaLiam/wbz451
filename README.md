@@ -28,12 +28,18 @@ APP_BleDsadvStart(true);
 */
 --
 
-Connect 시 DSADV 종료
-/* DSADV 를 계속해서 안하면 종료라고 봐도 무방함.
+Connect 시 DSADV 종료 ( DSADV 를 계속해서 안하면 종료라고 봐도 무방함 )
+/* 참조 매크로 :
+case BLE_GAP_EVT_CONNECTED:
+참조 함수 : 
+APP_BleGapEvtHandler((BLE_GAP_Event_T *)p_stackEvt->p_event);
 */
 
 Disconnect 시 DSAD Restart
-/*참조 함수 : 
+/*참조 매크로 :
+case BLE_GAP_EVT_DISCONNECTED:
+참조 함수 : 
+APP_BleGapEvtHandler((BLE_GAP_Event_T *)p_stackEvt->p_event);
 APP_BleDsadvRestart();
 */
 

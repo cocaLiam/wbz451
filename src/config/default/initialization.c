@@ -384,7 +384,7 @@ void SYS_Initialize ( void* data )
     if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_NONE) //Initialize RTC if wake source is none(i.e power on reset)
     {   /* 프로그램 Upload 시에만 동작하는 부분 [ 보드의 리셋버튼으로는 호출 X ]*/
         RTC_Initialize();
-        SERCOM1_USART_Write((uint8_t *)"RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) \r\n",(strlen("RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) " + 1)));
+        SERCOM1_USART_Write((uint8_t *)"RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) \r\n",(strlen("RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) " + 2)));
     }
 
     NVM_Initialize();

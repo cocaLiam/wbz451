@@ -38,6 +38,8 @@ int main ( void )
 {
     /* Initialize all modules */
     SYS_Initialize ( NULL );
+    printf("##########################\r\n");
+    printf(" MAIN SYS_Initialize \r\n");
 
     while ( true )
     {
