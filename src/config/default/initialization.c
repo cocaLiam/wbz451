@@ -46,7 +46,7 @@
 #include "configuration.h"
 #include "definitions.h"
 #include "device.h"
-
+#include <string.h>
 
 
 // ****************************************************************************
@@ -233,7 +233,6 @@ OSAL_QUEUE_HANDLE_TYPE bleRequestQueueHandle;
 
 OSAL_API_LIST_TYPE     osalAPIList;
 
-#define REGULATORY_REGION "ETSI"
 
 
 
@@ -296,7 +295,6 @@ __attribute__((ramfunc, long_call, section(".ramfunc"),unique_section)) void PCH
     }
 
 }
-
 void _on_reset(void)
 {
     //Need to clear register before configure any GPIO
@@ -315,8 +313,7 @@ void _on_reset(void)
         PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk))) 
                                         | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
     }
-    
-    CLK_Initialize();
+    CLOCK_Initialize();
 }
 
 
@@ -328,8 +325,29 @@ void _on_reset(void)
 // *****************************************************************************
 // *****************************************************************************
 
-/* MISRAC 2012 deviation block end */
+/*******************************************************************************
+  Function:
+    void STDIO_BufferModeSet ( void )
 
+  Summary:
+    Sets the buffering mode for stdin and stdout
+
+  Remarks:
+ ********************************************************************************/
+static void STDIO_BufferModeSet(void)
+{
+    /* MISRAC 2012 deviation block start */
+    /* MISRA C-2012 Rule 21.6 deviated 2 times in this file.  Deviation record ID -  H3_MISRAC_2012_R_21_6_DR_3 */
+
+    /* Make stdin unbuffered */
+    setbuf(stdin, NULL);
+
+    /* Make stdout unbuffered */
+    setbuf(stdout, NULL);
+}
+
+
+/* MISRAC 2012 deviation block end */
 
 /*******************************************************************************
   Function:
@@ -349,78 +367,50 @@ void SYS_Initialize ( void* data )
 
     BT_SYS_Cfg_T        btSysCfg;
     BT_SYS_Option_T     btOption;
-/*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
 
-
-  
-    //CLK_Initialize();
-    /* Configure Prefetch, Wait States */
-    /*PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk))) 
-                                    | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));*/
+/* 개발중인 코드 */  
+    // CLOCK_Initialize();
+    // /* Configure Prefetch, Wait States */
+    // PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk)))
+    //                                 | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
 
     DEVICE_DeepSleepWakeSrc_T wakeSrc;
-    DEVICE_GetDeepSleepWakeUpSrc(&wakeSrc);
-    
+    DEVICE_GetDeepSleepWakeUpSrc(&wakeSrc); // 모든 Inital 은 여기 아래에 해야합니다.
 
-	GPIO_Initialize();
+    STDIO_BufferModeSet();
+    GPIO_Initialize();
+    SERCOM1_USART_Initialize();
 
-    if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_NONE)
-    {
+    if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_NONE) //Initialize RTC if wake source is none(i.e power on reset)
+    {   /* 프로그램 Upload 시에만 동작하는 부분 [ 보드의 리셋버튼으로는 호출 X ]*/
         RTC_Initialize();
+        SERCOM1_USART_Write((uint8_t *)"RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) \r\n",(strlen("RTC_Initialize 업로드 완료 or 초기상태 진입(Power reset not MCLR) " + 1)));
     }
 
     NVM_Initialize();
 
 
+// /* App 에 기본으로 있는 코드 */
+//     //CLK_Initialize();
+//     /* Configure Prefetch, Wait States */
+//     /*PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk))) 
+//                                     | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));*/
 
-    /* MISRAC 2012 deviation block start */
-    /* Following MISRA-C rules deviated in this block  */
-    /* MISRA C-2012 Rule 11.3 - Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
-    /* MISRA C-2012 Rule 11.8 - Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
+//     DEVICE_DeepSleepWakeSrc_T wakeSrc;
+//     DEVICE_GetDeepSleepWakeUpSrc(&wakeSrc);
+    
 
-/*******************************************************************************
-* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
-*
-* Subject to your compliance with these terms, you may use Microchip software
-* and any derivatives exclusively with Microchip products. It is your
-* responsibility to comply with third party license terms applicable to your
-* use of third party software (including open source software) that may
-* accompany Microchip software.
-*
-* THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
-* EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED
-* WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A
-* PARTICULAR PURPOSE.
-*
-* IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
-* INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
-* WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS
-* BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO THE
-* FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
-* ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
-* THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+// 	  GPIO_Initialize();
+
+//     if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_NONE)
+//     {
+//         RTC_Initialize();
+//     }
+
+//     NVM_Initialize();
+
+
+
     // Initialize PDS- Persistent Data Server
     PDS_Init(MAX_PDS_ITEMS_COUNT, MAX_PDS_DIRECTORIES_COUNT);
 

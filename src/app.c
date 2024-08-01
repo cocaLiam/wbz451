@@ -131,6 +131,7 @@ void APP_Initialize ( void )
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
+
 }
 
 
@@ -151,7 +152,40 @@ void APP_Tasks ( void )
     /* Check the application's current state. */
     switch ( appData.state )
     {
-        /* Application's initial state. */
+        // case APP_STATE_INIT:
+        // {
+        //     bool appInitialized = true;
+        //     //appData.appQueue = xQueueCreate( 10, sizeof(APP_Msg_T) );
+
+        //     DEVICE_DeepSleepWakeSrc_T wakeSrc;
+        //     DEVICE_GetDeepSleepWakeUpSrc(&wakeSrc);
+        //     printf(" - APP_STATE_INIT \r\n");
+        //     if ((wakeSrc != DEVICE_DEEP_SLEEP_WAKE_INT0) && (wakeSrc != DEVICE_DEEP_SLEEP_WAKE_RTC))
+        //     {
+        //         printf(" - wakeSrc \r\n");
+        //         RTC_Timer32Start();
+        //         DEVICE_EnterDeepSleep(false,0);
+        //         printf(" - wakeSrc \r\n");
+        //     }
+            
+        //     if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_INT0)
+        //     {
+        //         printf(" - WAKE \r\n");
+        //         APP_BleStackInit();
+        //         APP_BleDsadvStart(false);
+        //         GPIO_RB3_Set();
+        //         printf(" - WAKE \r\n");
+        //     }
+        //     else   
+        //     {
+        //         printf(" - ELSE \r\n");
+        //         GPIO_RB3_Set();
+        //         APP_BleDsadvStart(true);
+        //         printf(" - ELSE \r\n");
+        //     }
+        // // /* ------------ App 에 있는 코드 --------------*/
+
+
         case APP_STATE_INIT:
         {
             bool appInitialized = true;
@@ -159,45 +193,79 @@ void APP_Tasks ( void )
 
             DEVICE_DeepSleepWakeSrc_T wakeSrc;
             DEVICE_GetDeepSleepWakeUpSrc(&wakeSrc);
+            printf("  ------ %d \r\n", wakeSrc);
             
-            if ((wakeSrc != DEVICE_DEEP_SLEEP_WAKE_INT0) && (wakeSrc != DEVICE_DEEP_SLEEP_WAKE_RTC))
-            {  // INT0 도 아니고 , RTC 도 아닐떄
-                GPIO_RB0_Set();  //RED Reset 스위치 누르면 아주 잠깐 ON
-                RTC_Timer32Start(); // 저전력 모드에서 사용하는 Timer 
-                                    // << 이게 있어야 저전력 모드에서 나온 후 실제 시간을 추정 할 수 있다. + 특정시간 이후 저전력모드 해제 같은 동작을 할 수 있다.
-                DEVICE_EnterDeepSleep(false,0);  // true 일 시, 딥 슬립 모드에 진입하기 전 RAM 상태가 딥슬립모드에서 깨어난 후에도 그대로 유지 됨.
-                // false 일 시, RAM 초기화
-
-                // 테스트 
-                APP_BleDsadvStart(true);
+            // if ((wakeSrc != DEVICE_DEEP_SLEEP_WAKE_INT0) && (wakeSrc != DEVICE_DEEP_SLEEP_WAKE_RTC))
+            // { 
+            //     printf("--- Waiting Start Adv Signal --- %d \r\n", wakeSrc);
+            //     GPIO_RB0_Set();
+            //     RTC_Timer32Start();
+            //     // RTC_Timer32CounterSet(5);
+            //     DEVICE_EnterDeepSleep(false,0);  
+            //     /*  RB0 ,   RB3 ,   RB5
+            //         2150    2150    2150*/
+            // }
+            switch ( wakeSrc ){
+                case DEVICE_DEEP_SLEEP_WAKE_NONE:{    // 0 초기 상태
+                    printf("0 DEVICE_DEEP_SLEEP_WAKE_NONE DS START : %d \r\n",wakeSrc);
+                    RTC_Timer32Start();
+                    // RTC_Timer32CounterSet(5);
+                    DEVICE_EnterDeepSleep(false,0);  
+                    /*  RB0 ,   RB3 ,   RB5
+                        2150    2150    2150*/
+                    
+                    printf("0 DEVICE_DEEP_SLEEP_WAKE_NONE DS END : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_INT0:{  // 1 사용자 스위치
+                    printf("1 DEVICE_DEEP_SLEEP_WAKE_INT0 DSADV START : %d \r\n",wakeSrc);
+                    APP_BleStackInit();
+                    APP_BleDsadvStart(false);
+                    printf("1 DEVICE_DEEP_SLEEP_WAKE_INT0 DSADV END : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_RTC:{   /* 2 RTC 타이머에 의한 Interrupt
+                app_ble_dsadv.c 에 "#define DSADV_INTERVAL    1536" 해당 값에 의해 DEVICE_DEEP_SLEEP_WAKE_RTC Interrupt 발생
+                ex) DSADV_INTERVAL이 1600 일시, 0.625ms x 1600 = 1000ms(1초)
+                + app_ble.c 파일에 있는 Adv interval 값도 바꿔야 함
+                  advParam.intervalMin = 1536;
+                  advParam.intervalMax = 1600;
+                */
+                    printf("2 DEVICE_DEEP_SLEEP_WAKE_RTC DSADV START : %d \r\n",wakeSrc);
+                    APP_BleDsadvStart(true);
+                    printf("2 DEVICE_DEEP_SLEEP_WAKE_RTC DSADV END : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_DSWDT:{
+                    printf("3 DEVICE_DEEP_SLEEP_WAKE_DSWDT : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_MCLR:{  /* 4 리셋 스위치  
+                ( "0 초기 상태" 일떄 Reset 스위치 누르면 Interrupt on. 
+                "4 리셋 스위치" 일때 Reset 스위치 누르면 초기 상태로 회귀 )
+                */
+                    printf("4 DEVICE_DEEP_SLEEP_WAKE_MCLR : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_OTHER:{
+                    printf("5 DEVICE_DEEP_SLEEP_WAKE_OTHER : %d \r\n",wakeSrc);
+                    break;
+                } case DEVICE_DEEP_SLEEP_WAKE_END:{
+                    printf("6 DEVICE_DEEP_SLEEP_WAKE_END : %d \r\n",wakeSrc);
+                    break;
+                } default:{
+                    printf("8 Nothing : %d \r\n",wakeSrc);
+                    break;
+                }
             }
-            
-            if (wakeSrc == DEVICE_DEEP_SLEEP_WAKE_INT0)
-            {
-                GPIO_RB3_Set();  //green SW2 누르면 한번 반응 후
-                APP_BleStackInit();
-                APP_BleDsadvStart(false);  
-                // false 일 시, BLE 스택 유지 ( RAM 에 있는 기존의 BLE 스택을 재사용 한다. ) 
-                //    >> 따라서 DEVICE_EnterDeepSleep(false,0) 면 RAM이 초기화 되므로 기존의 BLE 스택을 재사용 할 수 없다.
-                // true 일 시, BLE 스택 초기화 ( RAM 에 있는 기존의 BLE 스택을 사용하지 않고 BLE 를 초기화 한다. )
-            }
-            else   
-            {
-                // GPIO_RB5_Set();  //blue 반응하고 나서 블루 무한 깜빡이 // 연결시 Blue 계속 점등
-                APP_BleDsadvStart(true);
-            }
-
+            // // printf("Trying to Adv ... %d \r\n", wakeSrc);
+            // APP_BleDsadvStart(true);
+            // printf("Trying to Adv ... %d \r\n", wakeSrc);
 
             if (appInitialized)
             {
-
                 appData.state = APP_STATE_SERVICE_TASKS;
             }
             break;
         }
-
         case APP_STATE_SERVICE_TASKS:
         {
+            printf(" +++++++++++ \r\n");
             if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
             {
 

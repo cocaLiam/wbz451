@@ -77,14 +77,6 @@
 #define GPIO_RB3_OutputEnable()      (GPIOB_REGS->GPIO_TRISCLR = (1U<<3U))
 #define GPIO_RB3_InputEnable()       (GPIOB_REGS->GPIO_TRISSET = (1U<<3U))
 #define GPIO_RB3_PIN                  GPIO_PIN_RB3
-/*** Macros for GPIO_RB5 pin ***/
-#define GPIO_RB5_Set()               (GPIOB_REGS->GPIO_LATSET = (1U<<5U))
-#define GPIO_RB5_Clear()             (GPIOB_REGS->GPIO_LATCLR = (1U<<5U))
-#define GPIO_RB5_Toggle()            (GPIOB_REGS->GPIO_LATINV= (1U<<5U))
-#define GPIO_RB5_Get()               ((GPIOB_REGS->GPIO_PORT >> 5U) & 0x1U)
-#define GPIO_RB5_OutputEnable()      (GPIOB_REGS->GPIO_TRISCLR = (1U<<5U))
-#define GPIO_RB5_InputEnable()       (GPIOB_REGS->GPIO_TRISSET = (1U<<5U))
-#define GPIO_RB5_PIN                  GPIO_PIN_RB5
 
 
 // *****************************************************************************

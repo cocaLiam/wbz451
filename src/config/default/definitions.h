@@ -48,8 +48,10 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "crypto/crypto.h"
 #include "ble/lib/include/bt_sys.h"
+#include "peripheral/sercom/usart/plib_sercom1_usart.h"
 /*******************************************************************************
 * Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
@@ -79,6 +81,7 @@
 #include "peripheral/nvic/plib_nvic.h"
 #include "peripheral/cmcc/plib_cmcc.h"
 #include "peripheral/rtc/plib_rtc.h"
+#include "peripheral/rcon/plib_rcon.h"
 #include "peripheral/nvm/plib_nvm.h"
 #include "wolfssl/wolfcrypt/port/pic32/crypt_wolfcryptcb.h"
 #include "FreeRTOS.h"

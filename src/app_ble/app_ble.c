@@ -46,7 +46,6 @@
 
 
 
-#include "app_trsps_handler.h"
 
 
 
@@ -63,7 +62,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#define GAP_DEV_NAME_VALUE          "BLE_DSADV"
+#define GAP_DEV_NAME_VALUE          "BEL_DSADV"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -163,8 +162,6 @@ void APP_BleStackEvtHandler(STACK_Event_T *p_stackEvt)
 
 
     //Direct event to BLE profiles
-    /* Transparent Profile */
-    BLE_TRSPS_BleEventHandler(p_stackEvt);
 
     
 
@@ -193,7 +190,7 @@ static void APP_BleConfigBasic(void)
     BLE_GAP_AdvParams_T             advParam;
     uint8_t advData[]={0x02, 0x01, 0x05, 0x05, 0x16, 0xDA, 0xFE, 0xFF, 0x01};
     BLE_GAP_AdvDataParams_T         appAdvData;
-    uint8_t scanRspData[]={0x0A, 0x09, 0x42, 0x4C, 0x45, 0x5F, 0x44, 0x53, 0x41, 0x44, 0x56};
+    uint8_t scanRspData[]={0x0A, 0x09, 0x42, 0x45, 0x4C, 0x5F, 0x44, 0x53, 0x41, 0x44, 0x56};
     BLE_GAP_AdvDataParams_T         appScanRspData;
     
 
@@ -203,6 +200,7 @@ static void APP_BleConfigBasic(void)
     (void)memset(&advParam, 0, sizeof(BLE_GAP_AdvParams_T));
     advParam.intervalMin = 1536;     /* Advertising Interval Min */
     advParam.intervalMax = 1600;     /* Advertising Interval Max */
+    // advParam.intervalMax = 8000;     /* Advertising Interval Max */
     advParam.type = BLE_GAP_ADV_TYPE_ADV_IND;        /* Advertising Type */
     advParam.advChannelMap = BLE_GAP_ADV_CHANNEL_ALL;        /* Advertising Channel Map */
     advParam.filterPolicy = BLE_GAP_ADV_FILTER_DEFAULT;     /* Advertising Filter Policy */
@@ -299,9 +297,6 @@ void APP_BleStackInitAdvance(void)
     //Initialize BLE services
 
     //Initialize BLE profiles
-    /* Transparent Profile */
-    BLE_TRSPS_Init();                                   /* Enable Server Role */
-    BLE_TRSPS_EventRegister(APP_TrspsEvtHandler);   /* Enable Server Role */
 
 
 

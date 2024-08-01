@@ -75,8 +75,8 @@
 
 /* Run time and task stats gathering related definitions. */
 #define configGENERATE_RUN_TIME_STATS           0
-#define configUSE_TRACE_FACILITY                0
-#define configUSE_STATS_FORMATTING_FUNCTIONS    0
+#define configUSE_TRACE_FACILITY                1
+#define configUSE_STATS_FORMATTING_FUNCTIONS    1
 
 /* Co-routine related definitions. */
 #define configUSE_CO_ROUTINES                   0
@@ -114,7 +114,7 @@
 #define INCLUDE_xTaskGetIdleTaskHandle          0
 #define INCLUDE_eTaskGetState                   0
 #define INCLUDE_xTimerPendFunctionCall          0
-#define INCLUDE_xTaskAbortDelay                 0
+#define INCLUDE_xTaskAbortDelay                 1
 #define INCLUDE_xTaskGetHandle                  0
 #define INCLUDE_xQueueGetMutexHolder            0
 #define INCLUDE_xSemaphoreGetMutexHolder        0

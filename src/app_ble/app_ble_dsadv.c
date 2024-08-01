@@ -50,6 +50,7 @@
 // *****************************************************************************
 // *****************************************************************************
 #define DSADV_INTERVAL    1536
+// #define DSADV_INTERVAL    7800
 
 // *****************************************************************************
 // *****************************************************************************
@@ -89,7 +90,7 @@ bool APP_BleDsadvIsEnable(void)
 void APP_BleDsadvStart(bool flag)
 {
     if (flag == false)
-    {  // 
+    {
         //Enable DSADV and request controller to store adv. parameters into backup ram
         BLE_GAP_EnableOneTimeAdv(BLE_GAP_ADV_OPTION_STORE_PARAMS);
 

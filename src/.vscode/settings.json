@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "definitions.h": "c",
-        "app_tick_task.h": "c",
-        "device_sleep.h": "c",
-        "plib_sercom1_usart.h": "c",
-        "crypt_wolfcryptcb.h": "c"
-    }
-}
