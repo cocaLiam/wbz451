@@ -209,8 +209,7 @@ void APP_Tasks ( void )
                 case DEVICE_DEEP_SLEEP_WAKE_NONE:{    // 0 초기 상태
                     printf("0 DEVICE_DEEP_SLEEP_WAKE_NONE DS START : %d \r\n",wakeSrc);
                     RTC_Timer32Start();
-                    // RTC_Timer32CounterSet(5);
-                    DEVICE_EnterDeepSleep(false,0);  
+                    DEVICE_EnterDeepSleep(false,0);
                     /*  RB0 ,   RB3 ,   RB5
                         2150    2150    2150*/
                     
