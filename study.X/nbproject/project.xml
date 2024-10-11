@@ -10,6 +10,7 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../src/custom_setting</sourceRootElem>
+                <sourceRootElem>../src/custom_function</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

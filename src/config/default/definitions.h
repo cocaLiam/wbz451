@@ -118,7 +118,7 @@
 #include "peripheral/nvm/plib_nvm.h"
 #include "app.h"
 #include "../../custom_setting/custom_setting.h"
-
+#include "../../custom_function/custom_function.h"
 
 
 // DOM-IGNORE-BEGIN

@@ -124,7 +124,7 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-    PinMode(PB0,OUTPUT);
+    LED_INIT();
 
 
     appData.appQueue = xQueueCreate( 64, sizeof(APP_Msg_T) );
@@ -173,7 +173,9 @@ void APP_Tasks ( void )
         case APP_STATE_SERVICE_TASKS:
         {
             PinToggle(PB0);
-            vTaskDelay(1000);
+            vTaskDelay(500);
+
+
             // if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
             // {
 
