@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "definitions.h": "c",
+        "custom_setting.h": "c"
+    }
+}

@@ -117,6 +117,7 @@
 #include "system/debug/sys_debug.h"
 #include "peripheral/nvm/plib_nvm.h"
 #include "app.h"
+#include "../../custom_setting/custom_setting.h"
 
 
 

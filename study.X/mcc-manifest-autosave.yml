@@ -2,7 +2,7 @@
 
 manifest_file_version: 1.0.0
 project: study
-creation_date: 2024-10-11T13:06:15.708+09:00[Asia/Seoul]
+creation_date: 2024-10-11T14:30:14.491+09:00[Asia/Seoul]
 operating_system: Windows 10
 mcc_mode: IDE
 mcc_mode_version: v6.20
@@ -23,6 +23,6 @@ modules:
 - {name: core, type: HARMONY, version: v3.13.5}
 - {name: wireless_ble, type: HARMONY, version: v1.3.0}
 - {name: CMSIS_5, type: HARMONY, version: 5.9.0}
-- {name: wolfssl, type: HARMONY, version: v5.7.0}
+- {name: wolfssl, type: HARMONY, version: v5.4.0}
 - {name: crypto, type: HARMONY, version: v3.8.2}
 - {name: CMSIS-FreeRTOS, type: HARMONY, version: v10.5.1}

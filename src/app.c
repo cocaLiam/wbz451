@@ -124,6 +124,7 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
+    PinMode(PB0,OUTPUT);
 
 
     appData.appQueue = xQueueCreate( 64, sizeof(APP_Msg_T) );
@@ -143,9 +144,9 @@ void APP_Initialize ( void )
 
 void APP_Tasks ( void )
 {
-    APP_Msg_T    appMsg[1];
-    APP_Msg_T   *p_appMsg;
-    p_appMsg=appMsg;
+//    APP_Msg_T    appMsg[1];
+//    APP_Msg_T   *p_appMsg;
+//    p_appMsg=appMsg;
 
     /* Check the application's current state. */
     switch ( appData.state )
@@ -171,24 +172,26 @@ void APP_Tasks ( void )
 
         case APP_STATE_SERVICE_TASKS:
         {
-            if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
-            {
+            PinToggle(PB0);
+            vTaskDelay(1000);
+            // if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
+            // {
 
-                if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
-                {
-                    // Pass BLE Stack Event Message to User Application for handling
-                    APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);
-                }
-                else if(p_appMsg->msgId==APP_MSG_BLE_STACK_LOG)
-                {
-                    // Pass BLE LOG Event Message to User Application for handling
-                    APP_BleStackLogHandler((BT_SYS_LogEvent_T *)p_appMsg->msgData);
-                }
+            //     if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
+            //     {
+            //         // Pass BLE Stack Event Message to User Application for handling
+            //         APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);
+            //     }
+            //     else if(p_appMsg->msgId==APP_MSG_BLE_STACK_LOG)
+            //     {
+            //         // Pass BLE LOG Event Message to User Application for handling
+            //         APP_BleStackLogHandler((BT_SYS_LogEvent_T *)p_appMsg->msgData);
+            //     }
 
 
 
-            }
-            break;
+            // }
+            // break;
         }
 
         /* TODO: implement your application state machine.*/
