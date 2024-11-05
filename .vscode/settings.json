@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "definitions.h": "c",
+        "app_ble.h": "c",
+        "app.h": "c",
+        "app_ble_dsadv.h": "c"
+    }
+}
