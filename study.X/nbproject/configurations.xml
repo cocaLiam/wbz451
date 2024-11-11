@@ -6,10 +6,17 @@
                    projectFiles="true">
       <itemPath>../src/custom_function/custom_function.h</itemPath>
       <itemPath>../src/custom_function/custom_led.c</itemPath>
+      <itemPath>../src/custom_function/custom_timer.c</itemPath>
+      <itemPath>../src/custom_function/custom_timer.h</itemPath>
+      <itemPath>../src/custom_function/custom_key.c</itemPath>
+      <itemPath>../src/custom_function/custom_key.h</itemPath>
+      <itemPath>../src/custom_function/custom_led.h</itemPath>
     </logicalFolder>
     <logicalFolder name="custom_setting"
                    displayName="custom_setting"
                    projectFiles="true">
+      <itemPath>../src/custom_setting/custom_pin_setting.c</itemPath>
+      <itemPath>../src/custom_setting/custom_setting.h</itemPath>
     </logicalFolder>
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -105,6 +112,15 @@
             <logicalFolder name="nvm" displayName="nvm" projectFiles="true">
               <itemPath>../src/config/default/peripheral/nvm/plib_nvm.h</itemPath>
             </logicalFolder>
+            <logicalFolder name="rtc" displayName="rtc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/rtc/plib_rtc.h</itemPath>
+            </logicalFolder>
+            <logicalFolder name="sercom" displayName="sercom" projectFiles="true">
+              <logicalFolder name="usart" displayName="usart" projectFiles="true">
+                <itemPath>../src/config/default/peripheral/sercom/usart/plib_sercom_usart_common.h</itemPath>
+                <itemPath>../src/config/default/peripheral/sercom/usart/plib_sercom0_usart.h</itemPath>
+              </logicalFolder>
+            </logicalFolder>
           </logicalFolder>
           <logicalFolder name="system" displayName="system" projectFiles="true">
             <logicalFolder name="cache" displayName="cache" projectFiles="true">
@@ -133,6 +149,7 @@
           <itemPath>../src/config/default/configuration.h</itemPath>
           <itemPath>../src/config/default/FreeRTOSConfig.h</itemPath>
           <itemPath>../src/config/default/user.h</itemPath>
+          <itemPath>../src/config/default/device_sleep.h</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="FreeRTOS" displayName="FreeRTOS" projectFiles="true">
@@ -426,7 +443,6 @@
       </logicalFolder>
       <itemPath>../src/app.h</itemPath>
       <itemPath>../src/app_idle_task.h</itemPath>
-      <itemPath>../src/custom_setting/custom_setting.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -491,6 +507,14 @@
             <logicalFolder name="nvm" displayName="nvm" projectFiles="true">
               <itemPath>../src/config/default/peripheral/nvm/plib_nvm.c</itemPath>
             </logicalFolder>
+            <logicalFolder name="rtc" displayName="rtc" projectFiles="true">
+              <itemPath>../src/config/default/peripheral/rtc/plib_rtc_timer.c</itemPath>
+            </logicalFolder>
+            <logicalFolder name="sercom" displayName="sercom" projectFiles="true">
+              <logicalFolder name="usart" displayName="usart" projectFiles="true">
+                <itemPath>../src/config/default/peripheral/sercom/usart/plib_sercom0_usart.c</itemPath>
+              </logicalFolder>
+            </logicalFolder>
           </logicalFolder>
           <logicalFolder name="stdio" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/default/stdio/xc32_monitor.c</itemPath>
@@ -510,6 +534,7 @@
           <itemPath>../src/config/default/exceptions.c</itemPath>
           <itemPath>../src/config/default/libc_syscalls.c</itemPath>
           <itemPath>../src/config/default/tasks.c</itemPath>
+          <itemPath>../src/config/default/device_sleep.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <logicalFolder name="FreeRTOS" displayName="FreeRTOS" projectFiles="true">
@@ -638,7 +663,6 @@
       <itemPath>../src/app.c</itemPath>
       <itemPath>../src/app_user_edits.c</itemPath>
       <itemPath>../src/app_idle_task.c</itemPath>
-      <itemPath>../src/custom_setting/custom_pin_setting.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -694,6 +718,7 @@
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-symbols" value="true"/>
@@ -751,6 +776,7 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -790,6 +816,7 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
+        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>
@@ -818,6 +845,7 @@
         <property key="use-indirect-calls" value="false"/>
       </C32CPP>
       <C32Global>
+        <property key="appendMe" value=""/>
         <property key="common-include-directories" value=""/>
         <property key="gp-relative-option" value=""/>
         <property key="legacy-libc" value="false"/>
@@ -841,9 +869,9 @@
                   value="Press to select which tool pack to use"/>
         <property key="communication.interface" value="swd"/>
         <property key="communication.interface.jtag" value="2wire"/>
-        <property key="communication.speed" value="2.000"/>
-        <property key="debugoptions.debug-startup" value="Use system settings"/>
-        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="communication.speed" value="0.5"/>
+        <property key="debugoptions.debug-startup" value="Halt at main"/>
+        <property key="debugoptions.reset-behaviour" value="Main"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="event.recorder.debugger.behavior" value="Running"/>
@@ -879,7 +907,7 @@
         <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.smart.program" value="When debugging only"/>
+        <property key="programoptions.smart.program" value="Never"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="toolpack.updateoptions"
                   value="toolpack.updateoptions.uselatestoolpack"/>
@@ -897,9 +925,9 @@
                   value="Press to select which tool pack to use"/>
         <property key="communication.interface" value="swd"/>
         <property key="communication.interface.jtag" value="2wire"/>
-        <property key="communication.speed" value="2.000"/>
-        <property key="debugoptions.debug-startup" value="Use system settings"/>
-        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="communication.speed" value="0.5"/>
+        <property key="debugoptions.debug-startup" value="Halt at main"/>
+        <property key="debugoptions.reset-behaviour" value="Main"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="event.recorder.debugger.behavior" value="Running"/>
@@ -935,7 +963,7 @@
         <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.smart.program" value="When debugging only"/>
+        <property key="programoptions.smart.program" value="Never"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="toolpack.updateoptions"
                   value="toolpack.updateoptions.uselatestoolpack"/>

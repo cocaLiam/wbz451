@@ -38,7 +38,7 @@
     This file contains the Application BLE implementation for this project.
  *******************************************************************************/
 
-
+#include <stdio.h>
 #include "app.h"
 #include "osal/osal_freertos_extend.h"
 #include "app_ble.h"
@@ -63,7 +63,7 @@
 // *****************************************************************************
 // *****************************************************************************
 
-#define GAP_DEV_NAME_VALUE          "Microchip"
+#define GAP_DEV_NAME_VALUE          "LIFE_BENEFIT"
 
 // *****************************************************************************
 // *****************************************************************************
@@ -132,23 +132,27 @@ void APP_BleStackEvtHandler(STACK_Event_T *p_stackEvt)
     {
         case STACK_GRP_BLE_GAP:
         {
+            // printf("   Stack_GRP_BLE_GAP\r\n");
             APP_BleGapEvtHandler((BLE_GAP_Event_T *)p_stackEvt->p_event);
         }
         break;
         
         case STACK_GRP_BLE_L2CAP:
         {
+            printf("   Stack_GRP_BLE_L2CAP\r\n");
             APP_BleL2capEvtHandler((BLE_L2CAP_Event_T *)p_stackEvt->p_event);
-         }
+        }
         break;
         case STACK_GRP_BLE_SMP:
         {
+            printf("   Stack_GRP_BLE_SMP\r\n");
             APP_BleSmpEvtHandler((BLE_SMP_Event_T *)p_stackEvt->p_event);
          }
         break;
 
         case STACK_GRP_GATT:
         {
+            printf("   Stack_GRP_BLE_GATT\r\n");
             APP_GattEvtHandler((GATT_Event_T *)p_stackEvt->p_event);
         }
         break;
@@ -189,9 +193,9 @@ static void APP_BleConfigBasic(void)
     int8_t                          connTxPower;
     int8_t                          advTxPower;
     BLE_GAP_AdvParams_T             advParam;
-    uint8_t advData[]={0x02, 0x01, 0x05, 0x0B, 0x09, 0x70, 0x69, 0x63, 0x33, 0x32, 0x63, 0x78, 0x2D, 0x62, 0x7A};
+    uint8_t advData[]={0x02, 0x01, 0x05, 0x0D, 0x09, 0x4C, 0x49, 0x46, 0x45, 0x5F, 0x42, 0x45, 0x4E, 0x45, 0x46, 0x49, 0x54};
     BLE_GAP_AdvDataParams_T         appAdvData;
-    uint8_t scanRspData[]={0x0B, 0x09, 0x70, 0x69, 0x63, 0x33, 0x32, 0x63, 0x78, 0x2D, 0x62, 0x7A};
+    uint8_t scanRspData[]={0x0D, 0x09, 0x4C, 0x49, 0x46, 0x45, 0x5F, 0x42, 0x45, 0x4E, 0x45, 0x46, 0x49, 0x54};
     BLE_GAP_AdvDataParams_T         appScanRspData;
     
 
@@ -216,7 +220,7 @@ static void APP_BleConfigBasic(void)
     (void)memcpy(appScanRspData.advData, scanRspData, appScanRspData.advLen);     /* Scan Response Data */
     BLE_GAP_SetScanRspData(&appScanRspData);
 
-    BLE_GAP_SetConnTxPowerLevel(15, &connTxPower);      /* Connection TX Power */
+    BLE_GAP_SetConnTxPowerLevel(9, &connTxPower);      /* Connection TX Power */
 }
 static void APP_BleConfigAdvance(void)
 {

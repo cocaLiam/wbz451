@@ -94,7 +94,7 @@
 #pragma config SMCLR =      NO_POR
 #pragma config QSCHE_EN =      OFF
 #pragma config QSPI_HSEN =      PPS
-#pragma config SCOM0_HSEN =      PPS
+#pragma config SCOM0_HSEN =      DIRECT
 #pragma config SCOM1_HSEN =      PPS
 #pragma config SCOM2_HSEN =      PPS
 #pragma config CCL_OE =      ON
@@ -304,6 +304,28 @@ __attribute__((ramfunc, long_call, section(".ramfunc"),unique_section)) void PCH
 // *****************************************************************************
 // *****************************************************************************
 
+/*******************************************************************************
+  Function:
+    void STDIO_BufferModeSet ( void )
+
+  Summary:
+    Sets the buffering mode for stdin and stdout
+
+  Remarks:
+ ********************************************************************************/
+static void STDIO_BufferModeSet(void)
+{
+    /* MISRAC 2012 deviation block start */
+    /* MISRA C-2012 Rule 21.6 deviated 2 times in this file.  Deviation record ID -  H3_MISRAC_2012_R_21_6_DR_3 */
+
+    /* Make stdin unbuffered */
+    setbuf(stdin, NULL);
+
+    /* Make stdout unbuffered */
+    setbuf(stdout, NULL);
+}
+
+
 /* MISRAC 2012 deviation block end */
 
 /*******************************************************************************
@@ -324,6 +346,9 @@ void SYS_Initialize ( void* data )
 
     BT_SYS_Cfg_T        btSysCfg;
     BT_SYS_Option_T     btOption;
+    STDIO_BufferModeSet();
+
+
 /*******************************************************************************
 * Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
@@ -359,11 +384,15 @@ void SYS_Initialize ( void* data )
     PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk)))
                                     | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
 
-
+    
 
 	GPIO_Initialize();
 
     EVSYS_Initialize();
+
+    SERCOM0_USART_Initialize();
+
+    RTC_Initialize();
 
     NVM_Initialize();
 

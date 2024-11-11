@@ -43,6 +43,7 @@
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
+#include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include "osal/osal_freertos_extend.h"
@@ -66,133 +67,160 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event)
     {
         case BLE_GAP_EVT_CONNECTED:
         {
+            printf("%d : BLE_GAP_EVT_CONNECTED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_DISCONNECTED:
         {
-            /* TODO: implement your application code.*/
+            printf("%d : BLE_GAP_EVT_DISCONNECTED\r\n",p_event->eventId);
+            BLE_GAP_SetAdvEnable(true,0);
+            printf("%d : ADV RESTART\r\n",p_event->eventId);
 
+
+            /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_CONN_PARAM_UPDATE:
         {
+            printf("%d : BLE_GAP_EVT_CONN_PARAM_UPDATE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ENCRYPT_STATUS:
         {
+            printf("%d : BLE_GAP_EVT_ENCRYPT_STATUS\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ADV_REPORT:
         {
+            printf("%d : BLE_GAP_EVT_ADV_REPORT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ENC_INFO_REQUEST:
         {
+            printf("%d : BLE_GAP_EVT_ENC_INFO_REQUEST\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_REMOTE_CONN_PARAM_REQUEST:
         {
+            printf("%d : BLE_GAP_EVT_REMOTE_CONN_PARAM_REQUEST\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_EXT_ADV_REPORT:
         {
+            printf("%d : BLE_GAP_EVT_EXT_ADV_REPORT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ADV_TIMEOUT:
         {
+            // Adv 이후 일정 시간 연결이 안되어있을때 나오는 이벤트 
+            printf("%d : BLE_GAP_EVT_ADV_TIMEOUT\r\n",p_event->eventId);
+            BLE_GAP_SetAdvEnable(true,4000);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_TX_BUF_AVAILABLE:
         {
+            printf("%d : BLE_GAP_EVT_TX_BUF_AVAILABLE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_DEVICE_NAME_CHANGED:
         {
+            printf("%d : BLE_GAP_EVT_DEVICE_NAME_CHANGED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_AUTH_PAYLOAD_TIMEOUT:
         {
+            printf("%d : BLE_GAP_EVT_AUTH_PAYLOAD_TIMEOUT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_PHY_UPDATE:
         {
+            printf("%d : BLE_GAP_EVT_PHY_UPDATE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_SCAN_REQ_RECEIVED:
         {
+            printf("%d : BLE_GAP_EVT_SCAN_REQ_RECEIVED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_DIRECT_ADV_REPORT:
         {
+            printf("%d : BLE_GAP_EVT_DIRECT_ADV_REPORT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_PERI_ADV_SYNC_EST:
         {
+            printf("%d : BLE_GAP_EVT_PERI_ADV_SYNC_EST\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_PERI_ADV_REPORT:
         {
+            printf("%d : BLE_GAP_EVT_PERI_ADV_REPORT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_PERI_ADV_SYNC_LOST:
         {
+            printf("%d : BLE_GAP_EVT_PERI_ADV_SYNC_LOST\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ADV_SET_TERMINATED:
         {
+            printf("%d : BLE_GAP_EVT_ADV_SET_TERMINATED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_SCAN_TIMEOUT:
         {
+            printf("%d : BLE_GAP_EVT_SCAN_TIMEOUT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_TRANSMIT_POWER_REPORTING:
         {
+            printf("%d : BLE_GAP_EVT_TRANSMIT_POWER_REPORTING\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case BLE_GAP_EVT_ADV_COMPL:
         {
+            printf("%d : BLE_GAP_EVT_ADV_COMPL\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
 
         }
@@ -200,6 +228,7 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event)
 
         case BLE_GAP_EVT_PATH_LOSS_THRESHOLD:
         {
+            printf("%d : BLE_GAP_EVT_PATH_LOSS_THRESHOLD\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
@@ -266,114 +295,133 @@ void APP_GattEvtHandler(GATT_Event_T *p_event)
     {
         case GATTC_EVT_ERROR_RESP:
         {
+            printf("%d : GATTC_EVT_ERROR_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_DISC_PRIM_SERV_RESP:
         {
+            printf("%d : GATTC_EVT_DISC_PRIM_SERV_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_DISC_PRIM_SERV_BY_UUID_RESP:
         {
+            printf("%d : GATTC_EVT_DISC_PRIM_SERV_BY_UUID_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_DISC_CHAR_RESP:
         {
+            printf("%d : GATTC_EVT_DISC_CHAR_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_DISC_DESC_RESP:
         {
+            printf("%d : GATTC_EVT_DISC_DESC_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_READ_USING_UUID_RESP:
         {
+            printf("%d : GATTC_EVT_READ_USING_UUID_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_READ_RESP:
         {
+            printf("%d : GATTC_EVT_READ_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_WRITE_RESP:
         {
+            printf("%d : GATTC_EVT_WRITE_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_HV_NOTIFY:
         {
+            printf("%d : GATTC_EVT_HV_NOTIFY\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_HV_INDICATE:
         {
+            printf("%d : GATTC_EVT_HV_INDICATE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_READ:
         {
+            printf("%d : GATTS_EVT_READ\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_WRITE:
         {
+            printf("%d : GATTS_EVT_WRITE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_HV_CONFIRM:
         {
+            printf("%d : GATTS_EVT_HV_CONFIRM\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case ATT_EVT_TIMEOUT:
         {
+            printf("%d : ATT_EVT_TIMEOUT\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case ATT_EVT_UPDATE_MTU:
         {
+            printf("%d : ATT_EVT_UPDATE_MTU\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTC_EVT_DISC_CHAR_BY_UUID_RESP:
         {
+            printf("%d : GATTC_EVT_DISC_CHAR_BY_UUID_RESP\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_SERVICE_CHANGE:
         {
+            printf("%d : GATTS_EVT_SERVICE_CHANGE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_CLIENT_FEATURE_CHANGE:
         {
+            printf("%d : GATTS_EVT_CLIENT_FEATURE_CHANGE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_CLIENT_CCCDLIST_CHANGE:
         {
+            printf("%d : GATTS_EVT_CLIENT_CCCDLIST_CHANGE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
             OSAL_Free(p_event->eventField.onClientCccdListChange.p_cccdList);
         }
@@ -381,12 +429,14 @@ void APP_GattEvtHandler(GATT_Event_T *p_event)
 
         case GATTC_EVT_PROTOCOL_AVAILABLE:
         {
+            printf("%d : GATTC_EVT_PROTOCOL_AVAILABLE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
 
         case GATTS_EVT_PROTOCOL_AVAILABLE:
         {
+            printf("%d : GATTS_EVT_PROTOCOL_AVAILABLE\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
@@ -477,12 +527,14 @@ void APP_DmEvtHandler(BLE_DM_Event_T *p_event)
     {
         case BLE_DM_EVT_DISCONNECTED:
         {
+            printf("%d : BLE_DM_EVT_DISCONNECTED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
         
         case BLE_DM_EVT_CONNECTED:
         {
+            printf("%d : BLE_DM_EVT_CONNECTED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;

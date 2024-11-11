@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "definitions.h": "c",
-        "custom_setting.h": "c"
+        "custom_setting.h": "c",
+        "interrupts.h": "c"
     }
 }

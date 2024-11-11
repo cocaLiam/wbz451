@@ -1,22 +1,22 @@
 /*******************************************************************************
- System Interrupts File
+  System Sleep Header File
 
   Company:
     Microchip Technology Inc.
 
   File Name:
-    interrupt.h
+    device_sleep.h
 
   Summary:
-    Interrupt vectors mapping
+    This file contains the Device Sleep functions for the project.
 
   Description:
-    This file contains declarations of device vectors used by Harmony 3
+    This file contains the Device Sleep functions for the project.
  *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
-* Copyright (C) 2018 Microchip Technology Inc. and its subsidiaries.
+* Copyright (C) 2022 Microchip Technology Inc. and its subsidiaries.
 *
 * Subject to your compliance with these terms, you may use Microchip software
 * and any derivatives exclusively with Microchip products. It is your
@@ -36,40 +36,58 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *******************************************************************************/
+*******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef INTERRUPTS_H
-#define INTERRUPTS_H
+#ifndef DEVICE_SLEEP_H
+#define DEVICE_SLEEP_H
 
-// *****************************************************************************
-// *****************************************************************************
-// Section: Included Files
-// *****************************************************************************
-// *****************************************************************************
+#include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Macros
+// *****************************************************************************
+// *****************************************************************************
 
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Handler Routines
+// Section: Data Types
+// *****************************************************************************
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Function Prototypes
 // *****************************************************************************
 // *****************************************************************************
 
-void Reset_Handler (void);
-void NonMaskableInt_Handler (void);
-void HardFault_Handler (void);
-void MemoryManagement_Handler (void);
-void BusFault_Handler (void);
-void UsageFault_Handler (void);
-void vPortSVCHandler (void);
-void DebugMonitor_Handler (void);
-void xPortPendSVHandler (void);
-void xPortSysTickHandler (void);
-void RTC_InterruptHandler (void);
-void NVM_InterruptHandler (void);
+/**@brief The API is used to enter system sleep mode
+ *
+ * @param[in] None
+ * @param[out] None
+ *
+ * @retval None
+*/
+void DEVICE_EnterSleepMode(void);
 
+/**@brief The API is used to exit system sleep mode
+ *
+ * @param[in] None
+ * @param[out] None
+ *
+ * @retval None
+*/
+void DEVICE_ExitSleepMode(void);
 
+#ifdef __cplusplus
+}
+#endif
 
-#endif // INTERRUPTS_H
+#endif//DEVICE_SLEEP_H

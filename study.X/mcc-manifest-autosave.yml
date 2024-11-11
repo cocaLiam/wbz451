@@ -2,14 +2,14 @@
 
 manifest_file_version: 1.0.0
 project: study
-creation_date: 2024-10-11T14:30:14.491+09:00[Asia/Seoul]
+creation_date: 2024-11-07T11:39:53.373+09:00[Asia/Seoul]
 operating_system: Windows 10
 mcc_mode: IDE
 mcc_mode_version: v6.20
 device_name: WBZ451
 compiler: XC32 4.45
-mcc_version: 5.5.0
-mcc_core_version: 5.7.0
+mcc_version: 5.5.1
+mcc_core_version: 5.7.1
 content_manager_version: 5.0.1
 is_mcc_offline: false
 is_using_prerelease_versions: false

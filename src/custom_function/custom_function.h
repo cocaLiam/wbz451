@@ -1,35 +1,21 @@
 #ifndef CUSTOM_FUNCTION_H
 #define CUSTOM_FUNCTION_H
 
+#include "custom_timer.h"
+#include "custom_key.h"
+#include "custom_led.h"
 
+/**************************************************************************************/
 
+#define APP_RES_SUCCESS                         (0x0000U)               /**< Execution successfully. */
+#define APP_RES_FAIL                            (0x0001U)               /**< Execution fail. */
+#define APP_RES_OOM                             (0x0002U)               /**< Out of memory. */
+#define APP_RES_INVALID_PARA                    (0x0003U)               /**< Invalid parameters. */
+#define APP_RES_NO_RESOURCE                     (0x0004U)               /**< No resource. */
+#define APP_RES_BAD_STATE                       (0x0005U)               /**< Bad State. */
+#define APP_RES_PENDING_DUE_TO_SECURITY         (0x0006U)               /**< Pending the request due to security process. */
+#define APP_RES_BUSY                            (0x0007U)               /**< Execution fail due to system is busy. */
+#define APP_RES_COMPLETE                        (0x1000)                /**< Some procedure is complete to distinguish execution successfully */
 
-
-
-typedef enum{
-    RED = PB0,
-    GREEN = PB3,
-    BLUE = PB5,
-    NONE = -1,
-}ColorList;
-
-typedef enum{
-    CURRENT_LED_OFF,
-    CURRENT_LED_ON,
-    CURRENT_LED_BLINK,
-}LED_STATE;
-
-
-typedef struct
-{
-    LED_STATE led_state;
-    ColorList led_color;
-}CUSTOM_LED;
-
-
-void LED_INIT(void);
-void LED_ON(ColorList color);
-void LED_OFF(ColorList color);
-void LED_BLINK(ColorList color, int period);
 
 #endif

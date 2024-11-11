@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "definitions.h": "c",
+        "custom_function.h": "c",
+        "custom_setting.h": "c",
+        "sys_cache.h": "c",
+        "app_idle_task.h": "c",
+        "custom_key.h": "c",
+        "custom_timer.h": "c",
+        "osal_freertos_extend.h": "c",
+        "timers.h": "c"
+    }
+}

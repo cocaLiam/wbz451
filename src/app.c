@@ -124,13 +124,40 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-    LED_INIT();
 
 
     appData.appQueue = xQueueCreate( 64, sizeof(APP_Msg_T) );
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
+}
+
+#define Wait_1000ms 6400000
+#define Wait_500ms (Wait_1000ms/2)
+
+void wait()
+{
+  int tick = 0;
+  while (tick < 6400000)
+  {
+    tick++;
+    __NOP();
+  }
+  
+}
+
+void ProgramLoading( void )
+{
+  printf("Program Init ->");
+  for (int i = 0; i < 3; i++)
+  {
+    printf("@=@ ");
+    wait();
+  }
+  printf("\r\n\n");
+  wait();
+  printf("RESET\r\n");
+  wait();
 }
 
 
@@ -144,9 +171,9 @@ void APP_Initialize ( void )
 
 void APP_Tasks ( void )
 {
-//    APP_Msg_T    appMsg[1];
-//    APP_Msg_T   *p_appMsg;
-//    p_appMsg=appMsg;
+    APP_Msg_T    appMsg[1];
+    APP_Msg_T   *p_appMsg;
+    p_appMsg=appMsg;
 
     /* Check the application's current state. */
     switch ( appData.state )
@@ -156,44 +183,58 @@ void APP_Tasks ( void )
         {
             bool appInitialized = true;
             //appData.appQueue = xQueueCreate( 10, sizeof(APP_Msg_T) );
-
+            ProgramLoading();
+            printf("****************************\r\n");
+            printf("*** Main Program Running ***\r\n");
+            printf("*** Device Name : %s ***\r\n",DEVICE_NAME);  
+            printf("* [Device DID] : 0x%lx *\r\n",(DSU_REGS->DSU_DID));          
+            printf("****************************\r\n");
             APP_BleStackInit();
-
-
+            if (!(RTC_REGS->MODE0.RTC_CTRLA & RTC_MODE0_CTRLA_ENABLE_Msk))
+            {
+                RTC_Timer32Start();
+            }
+     
 
 
             if (appInitialized)
             {
 
                 appData.state = APP_STATE_SERVICE_TASKS;
+                KEY_Init();
+                KEY_MSG_REGISTER(KeyFunction);
+                BLE_GAP_SetAdvEnable(true,0);
+                printf("********** AdV On **********\r\n");
+                printf("****************************\r\n");
+
+
             }
             break;
         }
-
         case APP_STATE_SERVICE_TASKS:
         {
-            PinToggle(PB0);
-            vTaskDelay(500);
+            if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
+            {
+
+                if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
+                {
+                    // Pass BLE Stack Event Message to User Application for handling
+                    APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);                    
+                }
+                else if(p_appMsg->msgId==APP_MSG_BLE_STACK_LOG)
+                {
+                    // Pass BLE LOG Event Message to User Application for handling
+                    APP_BleStackLogHandler((BT_SYS_LogEvent_T *)p_appMsg->msgData);
+                }
+                else if(p_appMsg->msgId==APP_MSG_KEY_SCAN)
+                {
+                    KEY_SCAN();
+                }
 
 
-            // if (OSAL_QUEUE_Receive(&appData.appQueue, &appMsg, OSAL_WAIT_FOREVER))
-            // {
 
-            //     if(p_appMsg->msgId==APP_MSG_BLE_STACK_EVT)
-            //     {
-            //         // Pass BLE Stack Event Message to User Application for handling
-            //         APP_BleStackEvtHandler((STACK_Event_T *)p_appMsg->msgData);
-            //     }
-            //     else if(p_appMsg->msgId==APP_MSG_BLE_STACK_LOG)
-            //     {
-            //         // Pass BLE LOG Event Message to User Application for handling
-            //         APP_BleStackLogHandler((BT_SYS_LogEvent_T *)p_appMsg->msgData);
-            //     }
-
-
-
-            // }
-            // break;
+        }
+            break;
         }
 
         /* TODO: implement your application state machine.*/
