@@ -8,6 +8,7 @@
         "custom_key.h": "c",
         "custom_timer.h": "c",
         "osal_freertos_extend.h": "c",
-        "timers.h": "c"
+        "timers.h": "c",
+        "custom_led.h": "c"
     }
 }

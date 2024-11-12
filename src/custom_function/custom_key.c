@@ -4,7 +4,7 @@
     LIFE_BENEFIT
 
   @File Name
-    filename.h
+    custom_key.c
 
   @Author
     MOON
@@ -202,15 +202,18 @@ void KeyFunction(KEY_MSG_T msg)
     switch (msg)
     {
     case APP_KEY_MSG_SHORT_PRESS:
-        printf("Click : %d\r\n",msg);
+        {printf("Click : %d\r\n",msg);
+        LED_TOGGLE(BLUE);}
         break;
     
     case APP_KEY_MSG_LONG_PRESS:
-        printf("Click : %d\r\n",msg);
+        {printf("Click : %d\r\n",msg);
+        LED_TOGGLE(RED);}
         break;
 
     case APP_KEY_MSG_DOUBLE_CLICK:
-        printf("Click : %d\r\n",msg);
+        {printf("Click : %d\r\n",msg);
+        LED_TOGGLE(GREEN);}
         break;        
 
     default:

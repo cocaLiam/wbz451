@@ -124,7 +124,7 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
-
+    LED_INIT();
 
     appData.appQueue = xQueueCreate( 64, sizeof(APP_Msg_T) );
     /* TODO: Initialize your application's state machine and other
@@ -132,13 +132,12 @@ void APP_Initialize ( void )
      */
 }
 
-#define Wait_1000ms 6400000
-#define Wait_500ms (Wait_1000ms/2)
+
 
 void wait()
 {
   int tick = 0;
-  while (tick < 6400000)
+  while (tick < (configCPU_CLOCK_HZ/4))
   {
     tick++;
     __NOP();

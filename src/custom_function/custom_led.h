@@ -11,7 +11,7 @@
 
 /* ************************************************************************** */
 
-#ifndef _CUSTOM_LED_H    /* Guard against multiple inclusion */
+#ifndef _CUSTOM_LED_H
 #define _CUSTOM_LED_H
 
 /* ************************************************************************** */
@@ -20,25 +20,34 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 
+
 typedef enum{
-    RED = PB0,
-    GREEN = PB3,
-    BLUE = PB5,
-    NONE = -1,
+    RED,
+    GREEN,
+    BLUE,
+    TOTAL
 }ColorList;
 
 typedef enum{
     CURRENT_LED_OFF,
     CURRENT_LED_ON,
-    CURRENT_LED_BLINK,
-}LED_STATE;
+}LedState;
+
+typedef enum{
+    RED_PORT = PB0,
+    GREEN_PORT = PB3,
+    BLUE_PORT = PB5
+}LedPort;
 
 
 typedef struct
 {
-    LED_STATE led_state;
-    ColorList led_color;
-}CUSTOM_LED;
+    
+    ColorList color;
+    LedState led_state;
+    LedPort port;
+
+}DeviceLED;
 
 
 
@@ -48,11 +57,11 @@ typedef struct
 /* ************************************************************************** */
 /* ************************************************************************** */
 
+
 void LED_INIT(void);
 void LED_ON(ColorList color);
 void LED_OFF(ColorList color);
-void LED_BLINK(ColorList color, int period);
-
+void LED_TOGGLE(ColorList color);
 
 
 #endif
