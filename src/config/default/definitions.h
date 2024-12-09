@@ -115,7 +115,7 @@
 #include "driver/device_support/include/sleep_system.h"
 #include "framework_defs.h"
 #include "app_idle_task.h"
-#include "device_sleep.h"
+#include "device_deep_sleep.h"
 #include "system/int/sys_int.h"
 #include "system/cache/sys_cache.h"
 #include "osal/osal.h"
@@ -124,7 +124,6 @@
 
 #include "../../custom_setting/custom_setting.h"
 #include "../../custom_function/custom_function.h"
-
 
 
 // DOM-IGNORE-BEGIN
@@ -136,13 +135,13 @@ extern "C" {
 // DOM-IGNORE-END
 
 /* Device Information */
-#define DEVICE_NAME			 "WBZ451"
-#define DEVICE_ARCH			 "CORTEX-M4"
-#define DEVICE_FAMILY		 "PIC32CX_BZ2"
-#define DEVICE_SERIES		 "BZ45"
+#define DEVICE_NAME          "WBZ451"
+#define DEVICE_ARCH          "CORTEX-M4"
+#define DEVICE_FAMILY        "PIC32CX_BZ2"
+#define DEVICE_SERIES        "BZ45"
 
 /* CPU clock frequency */
-#define CPU_CLOCK_FREQUENCY 64000000
+#define CPU_CLOCK_FREQUENCY 64000000U
 
 // *****************************************************************************
 // *****************************************************************************

@@ -111,7 +111,7 @@ extern "C" {
 #define BLE_SMP_OPTION_NONE                                 (0x00U)        /**< Do not allow a bond to be created with a peer device. The keys are not stored.*/
 #define BLE_SMP_OPTION_BONDING                              (0x01U)        /**< Allows two connected devices to exchange and store security and identity information to create a trusted relationship . */
 #define BLE_SMP_OPTION_MITM                                 (0x04U)        /**< Request MITM protection. */
-#define BLE_SMP_OPTION_SECURE_CONNECTION                    (0x08U)        /**< Request LE Secure Connections pairing. */
+#define BLE_SMP_OPTION_SECURE_CONNECTION                    (0x08U)        /**< Request LE Secure Connections pairing. -> App confirm  */ 
 #define BLE_SMP_OPTION_KEYPRESS                             (0x10U)        /**< Enable keypress notifications. */
 /** @} */
 

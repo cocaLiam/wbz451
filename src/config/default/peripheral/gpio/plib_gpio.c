@@ -61,6 +61,10 @@ void GPIO_Initialize ( void )
  
           /* PORTA Initialization */
     /* PORTB Initialization */
+    GPIOB_REGS->GPIO_ODCSET = 0x2U; /* Open Drain Enable */
+    GPIOB_REGS->GPIO_LAT = 0x2U; /* Initial Latch Value */
+    GPIOB_REGS->GPIO_TRISCLR = 0x2U; /* Direction Control */
+    GPIOB_REGS->GPIO_ANSELCLR = 0x2U; /* Digital Mode Enable */
 
 
     /* PPS Input Remapping */

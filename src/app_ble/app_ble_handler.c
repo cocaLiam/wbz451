@@ -76,7 +76,7 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event)
         {
             printf("%d : BLE_GAP_EVT_DISCONNECTED\r\n",p_event->eventId);
             BLE_GAP_SetAdvEnable(true,0);
-            printf("%d : ADV RESTART\r\n",p_event->eventId);
+            printf("%d , Re-Scanning\r\n",p_event->eventId);
 
 
             /* TODO: implement your application code.*/
@@ -129,7 +129,6 @@ void APP_BleGapEvtHandler(BLE_GAP_Event_T *p_event)
         {
             // Adv 이후 일정 시간 연결이 안되어있을때 나오는 이벤트 
             printf("%d : BLE_GAP_EVT_ADV_TIMEOUT\r\n",p_event->eventId);
-            BLE_GAP_SetAdvEnable(true,4000);
             /* TODO: implement your application code.*/
         }
         break;
@@ -527,14 +526,12 @@ void APP_DmEvtHandler(BLE_DM_Event_T *p_event)
     {
         case BLE_DM_EVT_DISCONNECTED:
         {
-            printf("%d : BLE_DM_EVT_DISCONNECTED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
         
         case BLE_DM_EVT_CONNECTED:
         {
-            printf("%d : BLE_DM_EVT_CONNECTED\r\n",p_event->eventId);
             /* TODO: implement your application code.*/
         }
         break;
@@ -585,3 +582,49 @@ void APP_DmEvtHandler(BLE_DM_Event_T *p_event)
         break;
     }
 }
+
+// Data
+//void APP_TrspsEvtHandler(BLE_TRSPS_Event_T *p_event)
+//{
+//    APP_Msg_T trps_data;
+//    APP_Msg_T *p_trps_data;
+//    
+//    switch(p_event->eventId)
+//    {     
+//        case BLE_TRSPS_EVT_RECEIVE_DATA:
+//        {
+//            /* TODO: implement your application code.*/
+//            uint16_t data_len;
+//            uint8_t *data;
+//            // Retrieve received data length
+//            // SERCOM0_USART_Write((uint8_t *)"Data receive\r\n",14);
+//            BLE_TRSPS_GetDataLength(p_event->eventField.onReceiveData.connHandle, &data_len);
+//            // Allocate memory according to data length
+//            data = OSAL_Malloc(data_len);
+//            if(data == NULL)
+//            break;
+//            // Retrieve received data
+//            BLE_TRSPS_GetData(p_event->eventField.onReceiveData.connHandle, data);
+//            // Output received data to UART
+//            // SERCOM0_USART_Write(data, data_len);
+//            SERCOM0_USART_Write("\r\n",2);
+//
+//
+//
+//            // data + Flag
+//            
+//            trps_data.msgId = APP_BLE_EVT_RECEIVE;
+//            memcpy(trps_data.msgData,data_len,sizeof(data_len));
+//            memcpy(trps_data.msgData+sizeof(data_len),data,data_len);
+//            p_trps_data = &trps_data;
+//
+//            OSAL_QUEUE_Send(&appData.appQueue, p_trps_data, 0);
+//            // Free memory
+//            OSAL_Free(data);
+//
+//        }
+//        break;
+//       default:
+//        break;
+//    }
+//}

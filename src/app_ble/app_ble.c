@@ -38,12 +38,12 @@
     This file contains the Application BLE implementation for this project.
  *******************************************************************************/
 
-#include <stdio.h>
+
 #include "app.h"
 #include "osal/osal_freertos_extend.h"
 #include "app_ble.h"
 #include "app_ble_handler.h"
-
+#include "config/default/ble/service_ble/ble_cms/ble_communication_svc.h"
 
 
 
@@ -132,27 +132,23 @@ void APP_BleStackEvtHandler(STACK_Event_T *p_stackEvt)
     {
         case STACK_GRP_BLE_GAP:
         {
-            // printf("   Stack_GRP_BLE_GAP\r\n");
             APP_BleGapEvtHandler((BLE_GAP_Event_T *)p_stackEvt->p_event);
         }
         break;
         
         case STACK_GRP_BLE_L2CAP:
         {
-            printf("   Stack_GRP_BLE_L2CAP\r\n");
             APP_BleL2capEvtHandler((BLE_L2CAP_Event_T *)p_stackEvt->p_event);
-        }
+         }
         break;
         case STACK_GRP_BLE_SMP:
         {
-            printf("   Stack_GRP_BLE_SMP\r\n");
             APP_BleSmpEvtHandler((BLE_SMP_Event_T *)p_stackEvt->p_event);
          }
         break;
 
         case STACK_GRP_GATT:
         {
-            printf("   Stack_GRP_BLE_GATT\r\n");
             APP_GattEvtHandler((GATT_Event_T *)p_stackEvt->p_event);
         }
         break;
@@ -238,7 +234,7 @@ static void APP_BleConfigAdvance(void)
 
     // GAP Service option
     gapServiceOptions.charDeviceName.enableWriteProperty = false;             /* Enable Device Name Write Property */
-    gapServiceOptions.charAppearance.appearance = 0x0;                          /* Appearance */
+    gapServiceOptions.charAppearance.appearance = 0x300;                          /* Appearance */
     gapServiceOptions.charPeriPreferConnParam.enable = false;                    /* Enable Peripheral Preferred Connection Parameters */
 
     BLE_GAP_ConfigureBuildInService(&gapServiceOptions);
@@ -282,7 +278,7 @@ void APP_BleStackInitAdvance(void)
 
 
 
-
+    
 
     BLE_L2CAP_Init();
 
@@ -307,8 +303,7 @@ void APP_BleStackInitAdvance(void)
 
 
 
-
-
+//    BLE_TRSPS_EventRegister(APP_TrspsEvtHandler);
 
 
 

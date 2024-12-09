@@ -10,5 +10,6 @@
         "osal_freertos_extend.h": "c",
         "timers.h": "c",
         "custom_led.h": "c"
-    }
+    },
+    "C_Cpp.default.compilerPath": ""
 }

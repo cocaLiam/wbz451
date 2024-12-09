@@ -61,6 +61,14 @@
 // *****************************************************************************
 // *****************************************************************************
 
+/*** Macros for GPIO_RB1 pin ***/
+#define GPIO_RB1_Set()               (GPIOB_REGS->GPIO_LATSET = (1U<<1U))
+#define GPIO_RB1_Clear()             (GPIOB_REGS->GPIO_LATCLR = (1U<<1U))
+#define GPIO_RB1_Toggle()            (GPIOB_REGS->GPIO_LATINV= (1U<<1U))
+#define GPIO_RB1_Get()               ((GPIOB_REGS->GPIO_PORT >> 1U) & 0x1U)
+#define GPIO_RB1_OutputEnable()      (GPIOB_REGS->GPIO_TRISCLR = (1U<<1U))
+#define GPIO_RB1_InputEnable()       (GPIOB_REGS->GPIO_TRISSET = (1U<<1U))
+#define GPIO_RB1_PIN                  GPIO_PIN_RB1
 
 
 // *****************************************************************************

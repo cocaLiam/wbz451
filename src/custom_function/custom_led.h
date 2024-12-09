@@ -63,5 +63,4 @@ void LED_ON(ColorList color);
 void LED_OFF(ColorList color);
 void LED_TOGGLE(ColorList color);
 
-
 #endif

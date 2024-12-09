@@ -81,11 +81,13 @@ void LED_INIT( void )
     led_device[i].port = Color_Port_link(led_device[i].color);
 
     PinMode(led_device[i].port , OUTPUT);
-    printf("LED_INIT : %d, %d, %d\r\n",led_device[i].color,led_device[i].led_state,led_device[i].port);
   }
 
-
 }
+
+
+
+
 
 
 

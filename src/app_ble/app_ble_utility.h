@@ -52,6 +52,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include "ble_gap.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility
@@ -66,6 +67,40 @@ extern "C" {
 // Section: Type Definitions
 // *****************************************************************************
 // *****************************************************************************
+
+
+
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Data Types
+// *****************************************************************************
+
+//typedef struct APP_PairedDevInfo_T{
+//    bool bPaired;
+//    BLE_GAP_Addr_T addr;
+//    uint16_t connHandle;
+//    bool bAddrLoaded;
+//    uint8_t peerDevId;                  
+//    bool bPeerDevIdExist;               
+//}APP_PairedDevInfo_T;
+//
+//
+//typedef struct APP_ExtPairedDevInfo_T{
+//    BLE_GAP_Addr_T localAddr;
+//    bool bConnectedByResolvedAddr;
+//}APP_ExtPairedDevInfo_T;
+//
+//#define APP_MAX_CCCD_NUM                    0x07
+//typedef struct APP_PairedDevGattInfo_T{
+//    uint8_t             serviceChange;
+//    uint8_t             clientSupportFeature;
+//    uint8_t             numOfCccd;
+//    GATTS_CccdList_T    cccdList[APP_MAX_CCCD_NUM];
+//}APP_PairedDevGattInfo_T;
+
+
 
 /*******************************************************************************
   Function:

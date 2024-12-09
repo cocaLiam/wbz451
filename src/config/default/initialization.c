@@ -81,6 +81,7 @@
 #pragma config FRECCDIS =      OFF
 
 
+
 /*** DEVCFG1 ***/
 #pragma config ICESEL =      PGC1_PGD1
 #pragma config TRCEN =      ON
@@ -159,9 +160,10 @@
 // *****************************************************************************
 // *****************************************************************************
 /* Following MISRA-C rules are deviated in the below code block */
-/* MISRA C-2012 Rule 11.1 */
-/* MISRA C-2012 Rule 11.3 */
-/* MISRA C-2012 Rule 11.8 */
+/* MISRA C-2012 Rule 7.2 - Deviation record ID - H3_MISRAC_2012_R_7_2_DR_1 */
+/* MISRA C-2012 Rule 11.1 - Deviation record ID - H3_MISRAC_2012_R_11_1_DR_1 */
+/* MISRA C-2012 Rule 11.3 - Deviation record ID - H3_MISRAC_2012_R_11_3_DR_1 */
+/* MISRA C-2012 Rule 11.8 - Deviation record ID - H3_MISRAC_2012_R_11_8_DR_1 */
 
 
 
@@ -294,6 +296,25 @@ __attribute__((ramfunc, long_call, section(".ramfunc"),unique_section)) void PCH
     }
 
 }
+void _on_reset(void)
+{
+    //Need to clear register before configure any GPIO
+    DEVICE_ClearDeepSleepReg();
+
+    // Initialize the RF Clock Generator
+    SYS_ClkGen_Config();
+
+    /* Can't call a RAM function before __pic32c_data_initialization
+       Must call a flash function, but in A0 HW version, RAM function is required to avoid HW issue.
+       Thus, will not config PCHE before __pic32c_data_initialization in A0 version.
+    */
+    // Configure Prefetch, Wait States
+    if (DSU_REGS->DSU_DID & DSU_DID_REVISION_Msk)   //A1 and later version
+    {
+        PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk))) 
+                                        | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
+    }
+}
 
 
 
@@ -323,6 +344,7 @@ static void STDIO_BufferModeSet(void)
 
     /* Make stdout unbuffered */
     setbuf(stdout, NULL);
+    /* MISRAC 2012 deviation block end */
 }
 
 
@@ -372,19 +394,14 @@ void SYS_Initialize ( void* data )
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
 *******************************************************************************/
 
-    // Initialize the RF Clock Generator
-    SYS_ClkGen_Config();
-
-    // Configure Cache and Wait States
-    PCHE_Setup();
 
   
     CLOCK_Initialize();
     /* Configure Prefetch, Wait States */
     PCHE_REGS->PCHE_CHECON = (PCHE_REGS->PCHE_CHECON & (~(PCHE_CHECON_PFMWS_Msk | PCHE_CHECON_ADRWS_Msk | PCHE_CHECON_PREFEN_Msk)))
-                                    | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1));
+                                    | (PCHE_CHECON_PFMWS(1) | PCHE_CHECON_PREFEN(1) | PCHE_CHECON_ADRWS(0));
 
-    
+
 
 	GPIO_Initialize();
 
@@ -395,7 +412,6 @@ void SYS_Initialize ( void* data )
     RTC_Initialize();
 
     NVM_Initialize();
-
 
 
     /* MISRAC 2012 deviation block start */

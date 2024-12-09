@@ -96,3 +96,19 @@ void PinToggle(PinNumber pin)
 {
   ((gpio_registers_t*)(GPIOA_BASE_ADDRESS + (0x100U * (pin>>4U))))->GPIO_LATINV = (uint32_t)0x1U << (pin & 0xFU);
 }
+
+
+void PortOpen(void)
+{
+  PinMode(PB1, OUTPUT);
+  PinMode(PB2, OUTPUT);
+  PinMode(PA3, OUTPUT);
+  PinMode(PA2, OUTPUT);
+  PinMode(PA14, OUTPUT);
+  PinMode(PA13, OUTPUT);
+  PinMode(PA10, OUTPUT);
+  PinMode(PA7, OUTPUT);
+  PinMode(PA9, OUTPUT);
+  PinMode(PA8, OUTPUT);
+  // PinMode(PB1, OUTPUT);
+}

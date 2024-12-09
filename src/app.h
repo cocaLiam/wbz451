@@ -101,7 +101,8 @@ typedef enum APP_MsgId_T
     APP_MSG_KEY_SCAN,
     APP_MSG_ZB_STACK_EVT,
     APP_MSG_ZB_STACK_CB,
-    APP_MSG_STACK_END
+    APP_MSG_STACK_END,
+    APP_BLE_EVT_RECEIVE
 } APP_MsgId_T;
 
 typedef struct APP_Msg_T
