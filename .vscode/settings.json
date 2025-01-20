@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "sys_console.h": "c",
+        "app_ble_handler.h": "c",
+        "plib_gpio.h": "c",
+        "interrupts.h": "c"
+    }
+}

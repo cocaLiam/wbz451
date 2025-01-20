@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "sys_console.h": "c",
+        "ble_led_svc.h": "c",
+        "ble_print_svc.h": "c",
+        "plib_gpio.h": "c"
+    }
+}

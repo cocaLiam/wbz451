@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/default/production/ccb.X.production.elf">
+    <memory name="program">
+      <units>bytes</units>
+      <length>1032192</length>
+      <used>164064</used>
+      <free>868128</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>131072</length>
+      <used>73924</used>
+      <free>57148</free>
+    </memory>
+  </executable>
+</project>
